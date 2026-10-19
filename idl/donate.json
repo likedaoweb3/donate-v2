@@ -1,0 +1,7703 @@
+{
+  "address": "9NhbVKzzSKwkP7kEgNzSpacYA9UfCi2b58E1mrn2QsKT",
+  "metadata": {
+    "name": "donate",
+    "version": "0.1.0",
+    "spec": "0.1.0",
+    "description": "Donate (co-build) program: SOL/Alpha donations → compute-power → weighted Beta rewards, with referral binding and permissionless constrained allocation"
+  },
+  "instructions": [
+    {
+      "name": "accrue",
+      "docs": [
+        "permissionless: advance the global reward accumulator to `now` (the current time). Every",
+        "donate/claim already folds a call to it inside, so a standalone \"heartbeat\" call is optional."
+      ],
+      "discriminator": [
+        23,
+        76,
+        128,
+        149,
+        229,
+        247,
+        72,
+        228
+      ],
+      "accounts": [
+        {
+          "name": "config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  111,
+                  110,
+                  97,
+                  116,
+                  101,
+                  45,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config.config_seed",
+                "account": "DonateConfig"
+              }
+            ]
+          }
+        },
+        {
+          "name": "pool"
+        },
+        {
+          "name": "quote_vault"
+        },
+        {
+          "name": "treasury"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "activate",
+      "docs": [
+        "Activate a sealed import after oracle warmup and verification of the fixed,",
+        "immutable LP locker. Starts the reward and imported-user waiting baselines."
+      ],
+      "discriminator": [
+        194,
+        203,
+        35,
+        100,
+        151,
+        55,
+        170,
+        82
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "signer": true,
+          "relations": [
+            "config"
+          ]
+        },
+        {
+          "name": "config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  111,
+                  110,
+                  97,
+                  116,
+                  101,
+                  45,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config.config_seed",
+                "account": "DonateConfig"
+              }
+            ]
+          }
+        },
+        {
+          "name": "pool"
+        },
+        {
+          "name": "quote_vault"
+        },
+        {
+          "name": "locker_program",
+          "address": "9c18DLHnXrQC6MAVHpig9kpAE8YX7mZYhB6LtVT84RW1"
+        },
+        {
+          "name": "locker_program_data",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  127,
+                  212,
+                  246,
+                  222,
+                  216,
+                  250,
+                  64,
+                  217,
+                  66,
+                  90,
+                  63,
+                  214,
+                  216,
+                  235,
+                  75,
+                  132,
+                  60,
+                  211,
+                  234,
+                  87,
+                  146,
+                  122,
+                  158,
+                  216,
+                  92,
+                  250,
+                  215,
+                  103,
+                  128,
+                  212,
+                  113,
+                  154
+                ]
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                2,
+                168,
+                246,
+                145,
+                78,
+                136,
+                161,
+                176,
+                226,
+                16,
+                21,
+                62,
+                247,
+                99,
+                174,
+                43,
+                0,
+                194,
+                185,
+                61,
+                22,
+                193,
+                36,
+                210,
+                192,
+                83,
+                122,
+                16,
+                4,
+                128,
+                0,
+                0
+              ]
+            }
+          }
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "admin_seed_user",
+      "discriminator": [
+        184,
+        26,
+        142,
+        45,
+        139,
+        22,
+        49,
+        184
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true,
+          "relations": [
+            "config"
+          ]
+        },
+        {
+          "name": "config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  111,
+                  110,
+                  97,
+                  116,
+                  101,
+                  45,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config.config_seed",
+                "account": "DonateConfig"
+              }
+            ]
+          }
+        },
+        {
+          "name": "user_stake",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  111,
+                  110,
+                  97,
+                  116,
+                  101,
+                  45,
+                  117,
+                  115,
+                  101,
+                  114
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config"
+              },
+              {
+                "kind": "arg",
+                "path": "owner"
+              }
+            ]
+          }
+        },
+        {
+          "name": "referrer_stake",
+          "writable": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "owner",
+          "type": "pubkey"
+        },
+        {
+          "name": "referrer",
+          "type": "pubkey"
+        },
+        {
+          "name": "power",
+          "type": "u128"
+        },
+        {
+          "name": "power_granted",
+          "type": "u128"
+        }
+      ]
+    },
+    {
+      "name": "allocate_operations_direct",
+      "docs": [
+        "permissionless: transfer `amount_in` Alpha from `alpha_escrow` straight to the operations wallet's",
+        "Alpha ATA. This is the docs/donate.md \"configured operations\" leg; called alongside within the same tx by a donate",
+        "transaction, to consume the operations share left in escrow by `donate_alpha` (`amount_in` is the configured operations share of this",
+        "donation, passed by the dApp).",
+        "",
+        "The ops leg used to sell this Alpha into native SOL via Raydium AMM v4. Paying operations in Alpha",
+        "directly removes the swap: no Raydium/OpenBook account set (20 accounts → 5), no slippage loss, no",
+        "dependence on that pool's depth, and no temporary WSOL ATA to fund + close. The destination stays",
+        "pinned to `config.operations_wallet`'s ATA, so this leg is still unredirectable.",
+        "",
+        "Kept as a separate instruction rather than folded into `donate_alpha`: that account struct is at the",
+        "SBF 4 KB stack ceiling (see docs) and cannot take more accounts."
+      ],
+      "discriminator": [
+        239,
+        200,
+        157,
+        67,
+        104,
+        131,
+        206,
+        91
+      ],
+      "accounts": [
+        {
+          "name": "config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  111,
+                  110,
+                  97,
+                  116,
+                  101,
+                  45,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config.config_seed",
+                "account": "DonateConfig"
+              }
+            ]
+          }
+        },
+        {
+          "name": "alpha_escrow",
+          "writable": true
+        },
+        {
+          "name": "alpha_mint"
+        },
+        {
+          "name": "operations_wallet"
+        },
+        {
+          "name": "operations_alpha_ata",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "operations_wallet"
+              },
+              {
+                "kind": "const",
+                "value": [
+                  6,
+                  221,
+                  246,
+                  225,
+                  215,
+                  101,
+                  161,
+                  147,
+                  217,
+                  203,
+                  225,
+                  70,
+                  206,
+                  235,
+                  121,
+                  172,
+                  28,
+                  180,
+                  133,
+                  237,
+                  95,
+                  91,
+                  55,
+                  145,
+                  58,
+                  140,
+                  245,
+                  133,
+                  126,
+                  255,
+                  0,
+                  169
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "alpha_mint"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89
+              ]
+            }
+          }
+        },
+        {
+          "name": "token_program"
+        }
+      ],
+      "args": [
+        {
+          "name": "amount_in",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "allocate_sol_buy",
+      "docs": [
+        "SOL donation **buy leg** (allocate_sol_buy): mandatorily bundled by `donate_sol` in the same v0 tx (see",
+        "`require_sol_donation_bundled`). `amount` = the full donation amount (lamports), which `donate_sol` already wrapped into",
+        "WSOL in `config_wsol_ata`. Spend the non-operations allocation on Alpha ($LIKE) via Raydium,",
+        "validate the exact debit, minimum credit and unchanged token permissions, then pay the",
+        "configured operations share in WSOL. Unregistered escrow balances remain untouched.",
+        "`allocate_sol_distribute` distributes the bought Alpha by 45/50 treasury/liquidity after operations. Accounts ≈ the Raydium swap account set",
+        "(splitting into buy/distribute instructions avoids exceeding the 4 KB SBF stack frame when packing both the Raydium and self-built-dex account sets into one instruction)."
+      ],
+      "discriminator": [
+        112,
+        109,
+        31,
+        161,
+        113,
+        100,
+        246,
+        112
+      ],
+      "accounts": [
+        {
+          "name": "config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  111,
+                  110,
+                  97,
+                  116,
+                  101,
+                  45,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config.config_seed",
+                "account": "DonateConfig"
+              }
+            ]
+          }
+        },
+        {
+          "name": "operations_wallet",
+          "writable": true
+        },
+        {
+          "name": "wsol_mint",
+          "address": "So11111111111111111111111111111111111111112"
+        },
+        {
+          "name": "config_wsol_ata",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "config"
+              },
+              {
+                "kind": "const",
+                "value": [
+                  6,
+                  221,
+                  246,
+                  225,
+                  215,
+                  101,
+                  161,
+                  147,
+                  217,
+                  203,
+                  225,
+                  70,
+                  206,
+                  235,
+                  121,
+                  172,
+                  28,
+                  180,
+                  133,
+                  237,
+                  95,
+                  91,
+                  55,
+                  145,
+                  58,
+                  140,
+                  245,
+                  133,
+                  126,
+                  255,
+                  0,
+                  169
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "wsol_mint"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89
+              ]
+            }
+          }
+        },
+        {
+          "name": "alpha_escrow",
+          "writable": true
+        },
+        {
+          "name": "operations_wsol_ata",
+          "writable": true
+        },
+        {
+          "name": "market",
+          "accounts": [
+            {
+              "name": "raydium_program",
+              "address": "675kPX9MHTjS2zt1qfr1NYHuzeLXfQM9H24wFSUt1Mp8"
+            },
+            {
+              "name": "amm",
+              "writable": true,
+              "address": "FuemMjepntbzthvSEVmDGnfq7YWr8UebZrAXJrP46VtF"
+            },
+            {
+              "name": "amm_authority",
+              "address": "5Q544fKrFoe6tsEbD7S8EmxGTJYAKtTVhAW5Q5pge4j1"
+            },
+            {
+              "name": "amm_open_orders",
+              "writable": true,
+              "address": "5CQzLpqEKUhXGVXs3KzWNL7GxdusTtucZZzsNVMpq4UP"
+            },
+            {
+              "name": "amm_coin_vault",
+              "writable": true,
+              "address": "GTfC2Xxfxzqpvx8sJg24VauWgskCsT6SuxgrPx3oTLcR"
+            },
+            {
+              "name": "amm_pc_vault",
+              "writable": true,
+              "address": "BnL2wav9yAL8XYi9FRRcB46UFoQNZLGUC6GRtZtSvRrQ"
+            },
+            {
+              "name": "serum_program",
+              "address": "srmqPvymJeFKQ4zGQed1GFppgkRHL9kaELCbyksJtPX"
+            },
+            {
+              "name": "serum_market",
+              "writable": true,
+              "address": "AmNde9EdnEUDVjpyPyMJ7i4TW1S56HBeehqUo9Lcj8mN"
+            },
+            {
+              "name": "serum_bids",
+              "writable": true,
+              "address": "3n3UEkLZd6cWbHN22JLkD7352Wn71tw33jHZAs1zJeZ9"
+            },
+            {
+              "name": "serum_asks",
+              "writable": true,
+              "address": "J4c8de2QftrgmUERFiUXqdqRstn8PhGn26fWwQuvkcX6"
+            },
+            {
+              "name": "serum_event_queue",
+              "writable": true,
+              "address": "F3cwGcQjjuHVzcynTpPG1oYETRdAawd2UqHJAHFGEu2V"
+            },
+            {
+              "name": "serum_coin_vault",
+              "writable": true,
+              "address": "BtFehJQeDc4X1ur5y4i8S8ZDhinyi83PVsT5uih9ueAj"
+            },
+            {
+              "name": "serum_pc_vault",
+              "writable": true,
+              "address": "5xd5dibdqBrLmuVC4uA8kqXTzqBKQL7YoaaSWaU9a7tG"
+            },
+            {
+              "name": "serum_vault_signer",
+              "address": "6J31tcboLYxT51NaGFdBXcc6gkLCFbpcbBzPHMdF1oYv"
+            }
+          ]
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "allocate_sol_distribute",
+      "docs": [
+        "SOL donation **distribution leg** (allocate_sol_distribute): distribute the Alpha bought into `alpha_escrow` by `allocate_sol_buy`",
+        "by 45/50 treasury/liquidity after operations (**normalized over the non-ops weight 9500**): treasury /",
+        "add-liquidity→LP to blackhole — same source as `donate_alpha`'s self-built-dex distribution leg (kept consistent). Mandatorily",
+        "bundled by `donate_sol`; this leg additionally introspects to assert an earlier `allocate_sol_buy` acting on the same config exists in the tx (ensuring the buy leg already ran and",
+        "escrow already holds Alpha). The distribution accounts ≈ the self-built-dex distribution portion of `donate_alpha`."
+      ],
+      "discriminator": [
+        136,
+        230,
+        161,
+        172,
+        109,
+        245,
+        136,
+        120
+      ],
+      "accounts": [
+        {
+          "name": "config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  111,
+                  110,
+                  97,
+                  116,
+                  101,
+                  45,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config.config_seed",
+                "account": "DonateConfig"
+              }
+            ]
+          }
+        },
+        {
+          "name": "alpha_escrow",
+          "writable": true
+        },
+        {
+          "name": "pool",
+          "writable": true
+        },
+        {
+          "name": "alpha_mint",
+          "writable": true
+        },
+        {
+          "name": "beta_mint",
+          "writable": true
+        },
+        {
+          "name": "vaults",
+          "accounts": [
+            {
+              "name": "base_vault",
+              "writable": true
+            },
+            {
+              "name": "quote_vault",
+              "writable": true
+            }
+          ]
+        },
+        {
+          "name": "sinks",
+          "accounts": [
+            {
+              "name": "treasury",
+              "writable": true
+            }
+          ]
+        },
+        {
+          "name": "config_beta_ata",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "config"
+              },
+              {
+                "kind": "const",
+                "value": [
+                  6,
+                  221,
+                  246,
+                  225,
+                  215,
+                  101,
+                  161,
+                  147,
+                  217,
+                  203,
+                  225,
+                  70,
+                  206,
+                  235,
+                  121,
+                  172,
+                  28,
+                  180,
+                  133,
+                  237,
+                  95,
+                  91,
+                  55,
+                  145,
+                  58,
+                  140,
+                  245,
+                  133,
+                  126,
+                  255,
+                  0,
+                  169
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "beta_mint"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89
+              ]
+            }
+          }
+        },
+        {
+          "name": "config_lp_ata",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "config"
+              },
+              {
+                "kind": "const",
+                "value": [
+                  6,
+                  221,
+                  246,
+                  225,
+                  215,
+                  101,
+                  161,
+                  147,
+                  217,
+                  203,
+                  225,
+                  70,
+                  206,
+                  235,
+                  121,
+                  172,
+                  28,
+                  180,
+                  133,
+                  237,
+                  95,
+                  91,
+                  55,
+                  145,
+                  58,
+                  140,
+                  245,
+                  133,
+                  126,
+                  255,
+                  0,
+                  169
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "lp_mint"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89
+              ]
+            }
+          }
+        },
+        {
+          "name": "lp_mint",
+          "writable": true,
+          "relations": [
+            "pool"
+          ]
+        },
+        {
+          "name": "lp_lock",
+          "writable": true
+        },
+        {
+          "name": "locked_lp_vault",
+          "docs": [
+            "CPMM: canonical incinerator LP ATA. Legacy: existing Locker vault, retained for ABI compatibility."
+          ],
+          "writable": true
+        },
+        {
+          "name": "dex_program"
+        },
+        {
+          "name": "token_program"
+        },
+        {
+          "name": "instructions",
+          "docs": [
+            "`require_sol_buy_before`). Bound by address constant."
+          ],
+          "address": "Sysvar1nstructions1111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "begin_max_leg_refresh",
+      "docs": [
+        "Start/resume a permissionless bounded refresh. An unchanged live scan cannot be reset."
+      ],
+      "discriminator": [
+        42,
+        15,
+        31,
+        224,
+        30,
+        93,
+        86,
+        199
+      ],
+      "accounts": [
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  111,
+                  110,
+                  97,
+                  116,
+                  101,
+                  45,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config.config_seed",
+                "account": "DonateConfig"
+              }
+            ]
+          }
+        },
+        {
+          "name": "user_stake",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  111,
+                  110,
+                  97,
+                  116,
+                  101,
+                  45,
+                  117,
+                  115,
+                  101,
+                  114
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config"
+              },
+              {
+                "kind": "account",
+                "path": "user_stake.owner",
+                "account": "UserStake"
+              }
+            ]
+          }
+        },
+        {
+          "name": "refresh",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  109,
+                  97,
+                  120,
+                  45,
+                  108,
+                  101,
+                  103,
+                  45,
+                  114,
+                  101,
+                  102,
+                  114,
+                  101,
+                  115,
+                  104
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config"
+              },
+              {
+                "kind": "account",
+                "path": "user_stake"
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "begin_migration_abort",
+      "docs": [
+        "Irreversibly stop a migration before activation and prepare its",
+        "UserStake accounts for bounded rent-reclaim batches."
+      ],
+      "discriminator": [
+        135,
+        143,
+        214,
+        37,
+        39,
+        31,
+        65,
+        11
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "signer": true,
+          "relations": [
+            "config"
+          ]
+        },
+        {
+          "name": "config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  111,
+                  110,
+                  97,
+                  116,
+                  101,
+                  45,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config.config_seed",
+                "account": "DonateConfig"
+              }
+            ]
+          }
+        },
+        {
+          "name": "root_user",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  111,
+                  110,
+                  97,
+                  116,
+                  101,
+                  45,
+                  117,
+                  115,
+                  101,
+                  114
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config"
+              },
+              {
+                "kind": "account",
+                "path": "config.root_referrer",
+                "account": "DonateConfig"
+              }
+            ]
+          }
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "begin_raydium_migration",
+      "discriminator": [
+        218,
+        51,
+        212,
+        94,
+        96,
+        1,
+        38,
+        54
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true,
+          "address": "FJF6YMp72V8NHUniRZxweeZd5CyyTNYY96dUKuaG2kmw",
+          "relations": [
+            "config"
+          ]
+        },
+        {
+          "name": "config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  111,
+                  110,
+                  97,
+                  116,
+                  101,
+                  45,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config.config_seed",
+                "account": "DonateConfig"
+              }
+            ]
+          }
+        },
+        {
+          "name": "legacy_mint",
+          "address": "8UqYNLpm5fzG8LZXVaje6nf6gEdvB6WeLY1rLzoAnoc6"
+        },
+        {
+          "name": "treasury"
+        },
+        {
+          "name": "migration",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  114,
+                  97,
+                  121,
+                  100,
+                  105,
+                  117,
+                  109,
+                  45,
+                  109,
+                  105,
+                  103,
+                  114,
+                  97,
+                  116,
+                  105,
+                  111,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config"
+              }
+            ]
+          }
+        },
+        {
+          "name": "pool",
+          "address": "2A9fNRik2FogYNcnCJw6seYL7Xpjx6zRYAzcM7AZsxZA"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "users",
+          "type": "u32"
+        },
+        {
+          "name": "ordered_hash",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        },
+        {
+          "name": "resume_ts",
+          "type": "i64"
+        }
+      ]
+    },
+    {
+      "name": "begin_rebuild",
+      "discriminator": [
+        37,
+        155,
+        40,
+        250,
+        235,
+        44,
+        184,
+        158
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "signer": true,
+          "relations": [
+            "config"
+          ]
+        },
+        {
+          "name": "config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  111,
+                  110,
+                  97,
+                  116,
+                  101,
+                  45,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config.config_seed",
+                "account": "DonateConfig"
+              }
+            ]
+          }
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "bind_existing_clmm_pool",
+      "discriminator": [
+        6,
+        108,
+        55,
+        143,
+        3,
+        40,
+        178,
+        79
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "signer": true,
+          "address": "FJF6YMp72V8NHUniRZxweeZd5CyyTNYY96dUKuaG2kmw",
+          "relations": [
+            "config"
+          ]
+        },
+        {
+          "name": "config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  111,
+                  110,
+                  97,
+                  116,
+                  101,
+                  45,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config.config_seed",
+                "account": "DonateConfig"
+              }
+            ]
+          },
+          "relations": [
+            "migration",
+            "observation"
+          ]
+        },
+        {
+          "name": "migration",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  114,
+                  97,
+                  121,
+                  100,
+                  105,
+                  117,
+                  109,
+                  45,
+                  109,
+                  105,
+                  103,
+                  114,
+                  97,
+                  116,
+                  105,
+                  111,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config"
+              }
+            ]
+          }
+        },
+        {
+          "name": "pool",
+          "address": "FngGnPrkFfxBjbZSCTtJu6H2KCh4iwABf83dRJ9yFfQa"
+        },
+        {
+          "name": "treasury"
+        },
+        {
+          "name": "legacy_mint",
+          "address": "8UqYNLpm5fzG8LZXVaje6nf6gEdvB6WeLY1rLzoAnoc6"
+        },
+        {
+          "name": "base_vault"
+        },
+        {
+          "name": "quote_vault"
+        },
+        {
+          "name": "observation",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  105,
+                  99,
+                  101,
+                  45,
+                  111,
+                  98,
+                  115,
+                  101,
+                  114,
+                  118,
+                  97,
+                  116,
+                  105,
+                  111,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config"
+              }
+            ]
+          }
+        },
+        {
+          "name": "legacy_release",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  108,
+                  101,
+                  103,
+                  97,
+                  99,
+                  121,
+                  45,
+                  114,
+                  101,
+                  108,
+                  101,
+                  97,
+                  115,
+                  101
+                ]
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                127,
+                212,
+                246,
+                222,
+                216,
+                250,
+                64,
+                217,
+                66,
+                90,
+                63,
+                214,
+                216,
+                235,
+                75,
+                132,
+                60,
+                211,
+                234,
+                87,
+                146,
+                122,
+                158,
+                216,
+                92,
+                250,
+                215,
+                103,
+                128,
+                212,
+                113,
+                154
+              ]
+            }
+          }
+        },
+        {
+          "name": "deployment_position"
+        },
+        {
+          "name": "position_nft_mint"
+        },
+        {
+          "name": "deployment_position_nft"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "bind_prepared_clmm_pool",
+      "discriminator": [
+        26,
+        206,
+        96,
+        17,
+        96,
+        152,
+        11,
+        103
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "signer": true,
+          "address": "FJF6YMp72V8NHUniRZxweeZd5CyyTNYY96dUKuaG2kmw",
+          "relations": [
+            "config"
+          ]
+        },
+        {
+          "name": "config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  111,
+                  110,
+                  97,
+                  116,
+                  101,
+                  45,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config.config_seed",
+                "account": "DonateConfig"
+              }
+            ]
+          },
+          "relations": [
+            "migration",
+            "observation"
+          ]
+        },
+        {
+          "name": "migration",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  114,
+                  97,
+                  121,
+                  100,
+                  105,
+                  117,
+                  109,
+                  45,
+                  109,
+                  105,
+                  103,
+                  114,
+                  97,
+                  116,
+                  105,
+                  111,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config"
+              }
+            ]
+          }
+        },
+        {
+          "name": "pool",
+          "address": "FngGnPrkFfxBjbZSCTtJu6H2KCh4iwABf83dRJ9yFfQa"
+        },
+        {
+          "name": "treasury"
+        },
+        {
+          "name": "legacy_mint",
+          "address": "8UqYNLpm5fzG8LZXVaje6nf6gEdvB6WeLY1rLzoAnoc6"
+        },
+        {
+          "name": "base_vault"
+        },
+        {
+          "name": "quote_vault"
+        },
+        {
+          "name": "observation",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  105,
+                  99,
+                  101,
+                  45,
+                  111,
+                  98,
+                  115,
+                  101,
+                  114,
+                  118,
+                  97,
+                  116,
+                  105,
+                  111,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config"
+              }
+            ]
+          }
+        },
+        {
+          "name": "legacy_release",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  108,
+                  101,
+                  103,
+                  97,
+                  99,
+                  121,
+                  45,
+                  114,
+                  101,
+                  108,
+                  101,
+                  97,
+                  115,
+                  101
+                ]
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                127,
+                212,
+                246,
+                222,
+                216,
+                250,
+                64,
+                217,
+                66,
+                90,
+                63,
+                214,
+                216,
+                235,
+                75,
+                132,
+                60,
+                211,
+                234,
+                87,
+                146,
+                122,
+                158,
+                216,
+                92,
+                250,
+                215,
+                103,
+                128,
+                212,
+                113,
+                154
+              ]
+            }
+          }
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "bind_referrer",
+      "docs": [
+        "Register the signer and bind an (immutable) referrer. The referrer must be a *registered* node —",
+        "i.e. the `referrer_stake` PDA must already exist; Anchor enforces this by deserializing it",
+        "(if the account doesn't exist, deserialization fails and the whole tx reverts). Self-referral is rejected. Since a node can only",
+        "attach under a node registered earlier than itself, the whole graph is necessarily acyclic."
+      ],
+      "discriminator": [
+        45,
+        172,
+        18,
+        187,
+        3,
+        160,
+        196,
+        176
+      ],
+      "accounts": [
+        {
+          "name": "user",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  111,
+                  110,
+                  97,
+                  116,
+                  101,
+                  45,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config.config_seed",
+                "account": "DonateConfig"
+              }
+            ]
+          }
+        },
+        {
+          "name": "user_stake",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  111,
+                  110,
+                  97,
+                  116,
+                  101,
+                  45,
+                  117,
+                  115,
+                  101,
+                  114
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config"
+              },
+              {
+                "kind": "account",
+                "path": "user"
+              }
+            ]
+          }
+        },
+        {
+          "name": "referrer_stake",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  111,
+                  110,
+                  97,
+                  116,
+                  101,
+                  45,
+                  117,
+                  115,
+                  101,
+                  114
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config"
+              },
+              {
+                "kind": "arg",
+                "path": "referrer"
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "referrer",
+          "type": "pubkey"
+        }
+      ]
+    },
+    {
+      "name": "checkpoint_raydium_user",
+      "discriminator": [
+        105,
+        119,
+        28,
+        218,
+        237,
+        33,
+        56,
+        93
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true,
+          "address": "FJF6YMp72V8NHUniRZxweeZd5CyyTNYY96dUKuaG2kmw",
+          "relations": [
+            "config"
+          ]
+        },
+        {
+          "name": "config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  111,
+                  110,
+                  97,
+                  116,
+                  101,
+                  45,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config.config_seed",
+                "account": "DonateConfig"
+              }
+            ]
+          },
+          "relations": [
+            "migration"
+          ]
+        },
+        {
+          "name": "migration",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  114,
+                  97,
+                  121,
+                  100,
+                  105,
+                  117,
+                  109,
+                  45,
+                  109,
+                  105,
+                  103,
+                  114,
+                  97,
+                  116,
+                  105,
+                  111,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config"
+              }
+            ]
+          }
+        },
+        {
+          "name": "user_stake",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  111,
+                  110,
+                  97,
+                  116,
+                  101,
+                  45,
+                  117,
+                  115,
+                  101,
+                  114
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config"
+              },
+              {
+                "kind": "arg",
+                "path": "user_owner"
+              }
+            ]
+          }
+        },
+        {
+          "name": "claim_allowance",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  108,
+                  97,
+                  105,
+                  109,
+                  45,
+                  97,
+                  108,
+                  108,
+                  111,
+                  119,
+                  97,
+                  110,
+                  99,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config"
+              },
+              {
+                "kind": "arg",
+                "path": "user_owner"
+              }
+            ]
+          }
+        },
+        {
+          "name": "checkpoint",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  114,
+                  97,
+                  121,
+                  100,
+                  105,
+                  117,
+                  109,
+                  45,
+                  117,
+                  115,
+                  101,
+                  114
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config"
+              },
+              {
+                "kind": "arg",
+                "path": "user_owner"
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "owner",
+          "type": "pubkey"
+        }
+      ]
+    },
+    {
+      "name": "claim",
+      "docs": [
+        "Claim accumulated Beta. Deducts from the user's power (i.e. the release budget) the USDT value corresponding to this claim,",
+        "capped by \"time since last claim\" (n days → n×0.5%×power, baseline = last claim / first donation); any remainder carries over, not forfeited.",
+        "Beta is paid out from the treasury (authorized by the config PDA's signature)."
+      ],
+      "discriminator": [
+        62,
+        198,
+        214,
+        193,
+        213,
+        159,
+        108,
+        210
+      ],
+      "accounts": [
+        {
+          "name": "user",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  111,
+                  110,
+                  97,
+                  116,
+                  101,
+                  45,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config.config_seed",
+                "account": "DonateConfig"
+              }
+            ]
+          }
+        },
+        {
+          "name": "user_stake",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  111,
+                  110,
+                  97,
+                  116,
+                  101,
+                  45,
+                  117,
+                  115,
+                  101,
+                  114
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config"
+              },
+              {
+                "kind": "account",
+                "path": "user"
+              }
+            ]
+          }
+        },
+        {
+          "name": "pool",
+          "writable": true
+        },
+        {
+          "name": "base_mint"
+        },
+        {
+          "name": "beta_mint",
+          "writable": true
+        },
+        {
+          "name": "base_vault",
+          "writable": true
+        },
+        {
+          "name": "quote_vault",
+          "writable": true
+        },
+        {
+          "name": "treasury",
+          "writable": true
+        },
+        {
+          "name": "alpha_escrow",
+          "writable": true
+        },
+        {
+          "name": "operations_beta",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "config.operations_wallet",
+                "account": "DonateConfig"
+              },
+              {
+                "kind": "const",
+                "value": [
+                  6,
+                  221,
+                  246,
+                  225,
+                  215,
+                  101,
+                  161,
+                  147,
+                  217,
+                  203,
+                  225,
+                  70,
+                  206,
+                  235,
+                  121,
+                  172,
+                  28,
+                  180,
+                  133,
+                  237,
+                  95,
+                  91,
+                  55,
+                  145,
+                  58,
+                  140,
+                  245,
+                  133,
+                  126,
+                  255,
+                  0,
+                  169
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "beta_mint"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89
+              ]
+            }
+          }
+        },
+        {
+          "name": "user_alpha",
+          "writable": true
+        },
+        {
+          "name": "prices",
+          "accounts": [
+            {
+              "name": "amm_coin_vault",
+              "address": "GTfC2Xxfxzqpvx8sJg24VauWgskCsT6SuxgrPx3oTLcR"
+            },
+            {
+              "name": "amm_pc_vault",
+              "address": "BnL2wav9yAL8XYi9FRRcB46UFoQNZLGUC6GRtZtSvRrQ"
+            },
+            {
+              "name": "solusdc_wsol_vault",
+              "address": "DQyrAcCrDXQ7NeoqGgDCZwBvWDcYmFCjSb9JtteuvPpz"
+            },
+            {
+              "name": "solusdc_usdc_vault",
+              "address": "HLmqeL62xR1QoZ1HKKbXRrdN1p3phKpxRMb2VVopvBBz"
+            }
+          ]
+        },
+        {
+          "name": "dex_program"
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "instructions",
+          "address": "Sysvar1nstructions1111111111111111111111111"
+        },
+        {
+          "name": "claim_allowance",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  108,
+                  97,
+                  105,
+                  109,
+                  45,
+                  97,
+                  108,
+                  108,
+                  111,
+                  119,
+                  97,
+                  110,
+                  99,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config"
+              },
+              {
+                "kind": "account",
+                "path": "user"
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "percent_bps",
+          "type": "u16"
+        }
+      ]
+    },
+    {
+      "name": "close_migration_users",
+      "discriminator": [
+        159,
+        59,
+        169,
+        80,
+        112,
+        74,
+        165,
+        20
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true,
+          "relations": [
+            "config"
+          ]
+        },
+        {
+          "name": "config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  111,
+                  110,
+                  97,
+                  116,
+                  101,
+                  45,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config.config_seed",
+                "account": "DonateConfig"
+              }
+            ]
+          }
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "crank_treasury_burn",
+      "discriminator": [
+        101,
+        129,
+        137,
+        232,
+        14,
+        113,
+        4,
+        193
+      ],
+      "accounts": [
+        {
+          "name": "config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  111,
+                  110,
+                  97,
+                  116,
+                  101,
+                  45,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config.config_seed",
+                "account": "DonateConfig"
+              }
+            ]
+          },
+          "relations": [
+            "treasury_burn"
+          ]
+        },
+        {
+          "name": "treasury_burn",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  114,
+                  101,
+                  97,
+                  115,
+                  117,
+                  114,
+                  121,
+                  45,
+                  98,
+                  117,
+                  114,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config"
+              }
+            ]
+          }
+        },
+        {
+          "name": "treasury",
+          "writable": true
+        },
+        {
+          "name": "beta_mint",
+          "writable": true
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "donate_alpha",
+      "docs": [
+        "Donate Alpha ($LIKE, classic SPL). First move the Alpha into escrow, then perform exactly the same accounting as `donate_sol`.",
+        "(accounting identical to donate_sol)."
+      ],
+      "discriminator": [
+        150,
+        127,
+        73,
+        151,
+        106,
+        72,
+        13,
+        229
+      ],
+      "accounts": [
+        {
+          "name": "user",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  111,
+                  110,
+                  97,
+                  116,
+                  101,
+                  45,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config.config_seed",
+                "account": "DonateConfig"
+              }
+            ]
+          }
+        },
+        {
+          "name": "user_stake",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  111,
+                  110,
+                  97,
+                  116,
+                  101,
+                  45,
+                  117,
+                  115,
+                  101,
+                  114
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config"
+              },
+              {
+                "kind": "account",
+                "path": "user"
+              }
+            ]
+          }
+        },
+        {
+          "name": "alpha_mint",
+          "writable": true
+        },
+        {
+          "name": "user_alpha",
+          "writable": true
+        },
+        {
+          "name": "alpha_escrow",
+          "writable": true
+        },
+        {
+          "name": "pool",
+          "writable": true
+        },
+        {
+          "name": "beta_mint",
+          "writable": true
+        },
+        {
+          "name": "vaults",
+          "accounts": [
+            {
+              "name": "base_vault",
+              "writable": true
+            },
+            {
+              "name": "quote_vault",
+              "writable": true
+            }
+          ]
+        },
+        {
+          "name": "prices",
+          "accounts": [
+            {
+              "name": "amm_coin_vault",
+              "address": "GTfC2Xxfxzqpvx8sJg24VauWgskCsT6SuxgrPx3oTLcR"
+            },
+            {
+              "name": "amm_pc_vault",
+              "address": "BnL2wav9yAL8XYi9FRRcB46UFoQNZLGUC6GRtZtSvRrQ"
+            },
+            {
+              "name": "solusdc_wsol_vault",
+              "address": "DQyrAcCrDXQ7NeoqGgDCZwBvWDcYmFCjSb9JtteuvPpz"
+            },
+            {
+              "name": "solusdc_usdc_vault",
+              "address": "HLmqeL62xR1QoZ1HKKbXRrdN1p3phKpxRMb2VVopvBBz"
+            }
+          ]
+        },
+        {
+          "name": "lp_mint",
+          "writable": true,
+          "relations": [
+            "pool"
+          ]
+        },
+        {
+          "name": "lp_lock",
+          "writable": true
+        },
+        {
+          "name": "locked_lp_vault",
+          "docs": [
+            "CPMM: canonical incinerator LP ATA. Legacy: existing Locker vault, retained for ABI compatibility."
+          ],
+          "writable": true
+        },
+        {
+          "name": "sinks",
+          "accounts": [
+            {
+              "name": "treasury",
+              "writable": true
+            }
+          ]
+        },
+        {
+          "name": "config_beta_ata",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "config"
+              },
+              {
+                "kind": "const",
+                "value": [
+                  6,
+                  221,
+                  246,
+                  225,
+                  215,
+                  101,
+                  161,
+                  147,
+                  217,
+                  203,
+                  225,
+                  70,
+                  206,
+                  235,
+                  121,
+                  172,
+                  28,
+                  180,
+                  133,
+                  237,
+                  95,
+                  91,
+                  55,
+                  145,
+                  58,
+                  140,
+                  245,
+                  133,
+                  126,
+                  255,
+                  0,
+                  169
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "beta_mint"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89
+              ]
+            }
+          }
+        },
+        {
+          "name": "config_lp_ata",
+          "writable": true
+        },
+        {
+          "name": "dex_program"
+        },
+        {
+          "name": "token_program"
+        },
+        {
+          "name": "instructions",
+          "docs": [
+            "`allocate_operations_direct` covering this 3% (enforced check, see the end of `donate_alpha`). Bound by address constant."
+          ],
+          "address": "Sysvar1nstructions1111111111111111111111111"
+        },
+        {
+          "name": "claim_allowance",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  108,
+                  97,
+                  105,
+                  109,
+                  45,
+                  97,
+                  108,
+                  108,
+                  111,
+                  119,
+                  97,
+                  110,
+                  99,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config"
+              },
+              {
+                "kind": "account",
+                "path": "user"
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "donate_sol",
+      "docs": [
+        "Donate native SOL. Records its USDT value, mints power, and moves the SOL into escrow for later",
+        "processing by `allocate`. Requires a bound referrer (the `user_stake` PDA must already have been",
+        "created via `bind_referrer`)."
+      ],
+      "discriminator": [
+        168,
+        195,
+        198,
+        161,
+        226,
+        163,
+        222,
+        113
+      ],
+      "accounts": [
+        {
+          "name": "user",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  111,
+                  110,
+                  97,
+                  116,
+                  101,
+                  45,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config.config_seed",
+                "account": "DonateConfig"
+              }
+            ]
+          }
+        },
+        {
+          "name": "user_stake",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  111,
+                  110,
+                  97,
+                  116,
+                  101,
+                  45,
+                  117,
+                  115,
+                  101,
+                  114
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config"
+              },
+              {
+                "kind": "account",
+                "path": "user"
+              }
+            ]
+          }
+        },
+        {
+          "name": "pool"
+        },
+        {
+          "name": "quote_vault"
+        },
+        {
+          "name": "treasury",
+          "writable": true
+        },
+        {
+          "name": "solusdc_wsol_vault",
+          "address": "DQyrAcCrDXQ7NeoqGgDCZwBvWDcYmFCjSb9JtteuvPpz"
+        },
+        {
+          "name": "solusdc_usdc_vault",
+          "address": "HLmqeL62xR1QoZ1HKKbXRrdN1p3phKpxRMb2VVopvBBz"
+        },
+        {
+          "name": "wsol_mint",
+          "address": "So11111111111111111111111111111111111111112"
+        },
+        {
+          "name": "config_wsol_ata",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "config"
+              },
+              {
+                "kind": "const",
+                "value": [
+                  6,
+                  221,
+                  246,
+                  225,
+                  215,
+                  101,
+                  161,
+                  147,
+                  217,
+                  203,
+                  225,
+                  70,
+                  206,
+                  235,
+                  121,
+                  172,
+                  28,
+                  180,
+                  133,
+                  237,
+                  95,
+                  91,
+                  55,
+                  145,
+                  58,
+                  140,
+                  245,
+                  133,
+                  126,
+                  255,
+                  0,
+                  169
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "wsol_mint"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89
+              ]
+            }
+          }
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        },
+        {
+          "name": "instructions",
+          "docs": [
+            "`allocate_sol_distribute` covering this donation amount (enforced check, see the end of `donate_sol`). Bound by address constant."
+          ],
+          "address": "Sysvar1nstructions1111111111111111111111111"
+        },
+        {
+          "name": "claim_allowance",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  108,
+                  97,
+                  105,
+                  109,
+                  45,
+                  97,
+                  108,
+                  108,
+                  111,
+                  119,
+                  97,
+                  110,
+                  99,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config"
+              },
+              {
+                "kind": "account",
+                "path": "user"
+              }
+            ]
+          }
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "finalize_fresh",
+      "discriminator": [
+        94,
+        197,
+        214,
+        19,
+        91,
+        65,
+        32,
+        86
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "signer": true,
+          "relations": [
+            "config"
+          ]
+        },
+        {
+          "name": "config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  111,
+                  110,
+                  97,
+                  116,
+                  101,
+                  45,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config.config_seed",
+                "account": "DonateConfig"
+              }
+            ]
+          }
+        },
+        {
+          "name": "root_user",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  111,
+                  110,
+                  97,
+                  116,
+                  101,
+                  45,
+                  117,
+                  115,
+                  101,
+                  114
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config"
+              },
+              {
+                "kind": "account",
+                "path": "config.root_referrer",
+                "account": "DonateConfig"
+              }
+            ]
+          }
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "finalize_migration_abort",
+      "discriminator": [
+        48,
+        15,
+        53,
+        136,
+        46,
+        215,
+        11,
+        208
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "signer": true,
+          "relations": [
+            "config"
+          ]
+        },
+        {
+          "name": "config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  111,
+                  110,
+                  97,
+                  116,
+                  101,
+                  45,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config.config_seed",
+                "account": "DonateConfig"
+              }
+            ]
+          }
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "finalize_raydium_migration",
+      "discriminator": [
+        5,
+        210,
+        98,
+        101,
+        105,
+        253,
+        128,
+        47
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true,
+          "address": "FJF6YMp72V8NHUniRZxweeZd5CyyTNYY96dUKuaG2kmw",
+          "relations": [
+            "config"
+          ]
+        },
+        {
+          "name": "config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  111,
+                  110,
+                  97,
+                  116,
+                  101,
+                  45,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config.config_seed",
+                "account": "DonateConfig"
+              }
+            ]
+          },
+          "relations": [
+            "migration"
+          ]
+        },
+        {
+          "name": "migration",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  114,
+                  97,
+                  121,
+                  100,
+                  105,
+                  117,
+                  109,
+                  45,
+                  109,
+                  105,
+                  103,
+                  114,
+                  97,
+                  116,
+                  105,
+                  111,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config"
+              }
+            ]
+          }
+        },
+        {
+          "name": "treasury"
+        },
+        {
+          "name": "treasury_burn",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  114,
+                  101,
+                  97,
+                  115,
+                  117,
+                  114,
+                  121,
+                  45,
+                  98,
+                  117,
+                  114,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config"
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "finalize_seeding",
+      "discriminator": [
+        113,
+        106,
+        193,
+        27,
+        49,
+        57,
+        201,
+        109
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "signer": true,
+          "relations": [
+            "config"
+          ]
+        },
+        {
+          "name": "config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  111,
+                  110,
+                  97,
+                  116,
+                  101,
+                  45,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config.config_seed",
+                "account": "DonateConfig"
+              }
+            ]
+          }
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "initialize",
+      "discriminator": [
+        175,
+        175,
+        109,
+        31,
+        13,
+        152,
+        155,
+        237
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "program",
+          "address": "9NhbVKzzSKwkP7kEgNzSpacYA9UfCi2b58E1mrn2QsKT"
+        },
+        {
+          "name": "program_data"
+        },
+        {
+          "name": "beta_mint"
+        },
+        {
+          "name": "alpha_mint"
+        },
+        {
+          "name": "pool"
+        },
+        {
+          "name": "base_vault"
+        },
+        {
+          "name": "quote_vault"
+        },
+        {
+          "name": "operations_wallet"
+        },
+        {
+          "name": "lp_recipient"
+        },
+        {
+          "name": "root_referrer",
+          "docs": [
+            "stored as `config.root_referrer` and used as the owner/referrer + PDA seed of",
+            "`root_user`. Defaults to the deployer if the bootstrap passes `authority`."
+          ]
+        },
+        {
+          "name": "config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  111,
+                  110,
+                  97,
+                  116,
+                  101,
+                  45,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "beta_mint"
+              }
+            ]
+          }
+        },
+        {
+          "name": "treasury",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  114,
+                  101,
+                  97,
+                  115,
+                  117,
+                  114,
+                  121
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config"
+              }
+            ]
+          }
+        },
+        {
+          "name": "alpha_escrow",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  108,
+                  112,
+                  104,
+                  97,
+                  45,
+                  101,
+                  115,
+                  99,
+                  114,
+                  111,
+                  119
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config"
+              }
+            ]
+          }
+        },
+        {
+          "name": "sol_escrow",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  115,
+                  111,
+                  108,
+                  45,
+                  101,
+                  115,
+                  99,
+                  114,
+                  111,
+                  119
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config"
+              }
+            ]
+          }
+        },
+        {
+          "name": "root_user",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  111,
+                  110,
+                  97,
+                  116,
+                  101,
+                  45,
+                  117,
+                  115,
+                  101,
+                  114
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config"
+              },
+              {
+                "kind": "account",
+                "path": "root_referrer"
+              }
+            ]
+          }
+        },
+        {
+          "name": "token_program"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "params",
+          "type": {
+            "defined": {
+              "name": "InitializeParams"
+            }
+          }
+        },
+        {
+          "name": "startup_mode",
+          "type": {
+            "defined": {
+              "name": "StartupMode"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "initialize_price_observation",
+      "discriminator": [
+        53,
+        230,
+        13,
+        70,
+        148,
+        241,
+        145,
+        186
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true,
+          "relations": [
+            "config"
+          ]
+        },
+        {
+          "name": "config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  111,
+                  110,
+                  97,
+                  116,
+                  101,
+                  45,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config.config_seed",
+                "account": "DonateConfig"
+              }
+            ]
+          }
+        },
+        {
+          "name": "observation",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  105,
+                  99,
+                  101,
+                  45,
+                  111,
+                  98,
+                  115,
+                  101,
+                  114,
+                  118,
+                  97,
+                  116,
+                  105,
+                  111,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config"
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "rebuild_user",
+      "discriminator": [
+        28,
+        100,
+        4,
+        146,
+        179,
+        119,
+        56,
+        19
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "signer": true,
+          "relations": [
+            "config"
+          ]
+        },
+        {
+          "name": "config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  111,
+                  110,
+                  97,
+                  116,
+                  101,
+                  45,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config.config_seed",
+                "account": "DonateConfig"
+              }
+            ]
+          }
+        },
+        {
+          "name": "user_stake",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  111,
+                  110,
+                  97,
+                  116,
+                  101,
+                  45,
+                  117,
+                  115,
+                  101,
+                  114
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config"
+              },
+              {
+                "kind": "account",
+                "path": "user_stake.owner",
+                "account": "UserStake"
+              }
+            ]
+          }
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "record_price_observation",
+      "discriminator": [
+        88,
+        159,
+        91,
+        146,
+        36,
+        14,
+        109,
+        84
+      ],
+      "accounts": [
+        {
+          "name": "config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  111,
+                  110,
+                  97,
+                  116,
+                  101,
+                  45,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config.config_seed",
+                "account": "DonateConfig"
+              }
+            ]
+          },
+          "relations": [
+            "observation"
+          ]
+        },
+        {
+          "name": "keeper",
+          "signer": true
+        },
+        {
+          "name": "observation",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  105,
+                  99,
+                  101,
+                  45,
+                  111,
+                  98,
+                  115,
+                  101,
+                  114,
+                  118,
+                  97,
+                  116,
+                  105,
+                  111,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config"
+              }
+            ]
+          }
+        },
+        {
+          "name": "pool"
+        },
+        {
+          "name": "amm_coin_vault",
+          "address": "GTfC2Xxfxzqpvx8sJg24VauWgskCsT6SuxgrPx3oTLcR"
+        },
+        {
+          "name": "amm_pc_vault",
+          "address": "BnL2wav9yAL8XYi9FRRcB46UFoQNZLGUC6GRtZtSvRrQ"
+        },
+        {
+          "name": "solusdc_wsol_vault",
+          "address": "DQyrAcCrDXQ7NeoqGgDCZwBvWDcYmFCjSb9JtteuvPpz"
+        },
+        {
+          "name": "solusdc_usdc_vault",
+          "address": "HLmqeL62xR1QoZ1HKKbXRrdN1p3phKpxRMb2VVopvBBz"
+        },
+        {
+          "name": "base_vault"
+        },
+        {
+          "name": "quote_vault"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "refresh_max_leg",
+      "docs": [
+        "Legacy atomic path for small parents. Large parents use refresh_max_leg_page.",
+        "permissionless: recompute `max_leg` exactly, from **every** direct child.",
+        "",
+        "`sync_level` only ever raises `max_leg` because it sees one leg at a time; lowering it needs",
+        "the whole set. Supplying all `direct_count` children is enforced, so the answer cannot be",
+        "biased by omitting the largest one.",
+        "",
+        "The level is deliberately left alone here. A small-area move could cross the `STAR_COUNT_LEVEL`",
+        "boundary, and this context carries no upline account to record that against — so this",
+        "instruction refreshes the V-pool weight only, and `sync_level` picks up the level."
+      ],
+      "discriminator": [
+        205,
+        25,
+        220,
+        249,
+        28,
+        55,
+        156,
+        58
+      ],
+      "accounts": [
+        {
+          "name": "config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  111,
+                  110,
+                  97,
+                  116,
+                  101,
+                  45,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config.config_seed",
+                "account": "DonateConfig"
+              }
+            ]
+          }
+        },
+        {
+          "name": "user_stake",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  111,
+                  110,
+                  97,
+                  116,
+                  101,
+                  45,
+                  117,
+                  115,
+                  101,
+                  114
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config"
+              },
+              {
+                "kind": "account",
+                "path": "user_stake.owner",
+                "account": "UserStake"
+              }
+            ]
+          }
+        },
+        {
+          "name": "treasury"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "refresh_max_leg_page",
+      "docs": [
+        "Process at most 16 consecutive referral indices; commit only a complete, stable scan."
+      ],
+      "discriminator": [
+        86,
+        191,
+        17,
+        84,
+        143,
+        4,
+        173,
+        95
+      ],
+      "accounts": [
+        {
+          "name": "config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  111,
+                  110,
+                  97,
+                  116,
+                  101,
+                  45,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config.config_seed",
+                "account": "DonateConfig"
+              }
+            ]
+          }
+        },
+        {
+          "name": "user_stake",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  111,
+                  110,
+                  97,
+                  116,
+                  101,
+                  45,
+                  117,
+                  115,
+                  101,
+                  114
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config"
+              },
+              {
+                "kind": "account",
+                "path": "user_stake.owner",
+                "account": "UserStake"
+              }
+            ]
+          }
+        },
+        {
+          "name": "refresh",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  109,
+                  97,
+                  120,
+                  45,
+                  108,
+                  101,
+                  103,
+                  45,
+                  114,
+                  101,
+                  102,
+                  114,
+                  101,
+                  115,
+                  104
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config"
+              },
+              {
+                "kind": "account",
+                "path": "user_stake"
+              }
+            ]
+          }
+        },
+        {
+          "name": "treasury"
+        }
+      ],
+      "args": [
+        {
+          "name": "revision",
+          "type": "u64"
+        },
+        {
+          "name": "cursor",
+          "type": "u32"
+        }
+      ]
+    },
+    {
+      "name": "renounce_authority",
+      "docs": [
+        "authority-only: re-point to a new Alpha mint and its paired pool / vault /",
+        "escrow. Note: under the unified design, Alpha is the classic SPL mint pinned by the swap DEX ($LIKE),",
+        "and the pool is shared, so this instruction is effectively deprecated — kept only for IDL/admin-interface continuity.",
+        "Switching Alpha means a *different* `base=Alpha / quote=Beta` pool, so the new pool +",
+        "vaults, plus a config-owned escrow holding the new Alpha, must all already exist (the caller must",
+        "pre-create this escrow ATA). The old escrow's balance is abandoned — allocate it out",
+        "before switching. Beta (quote) never changes.",
+        "authority-only and **irreversible**: renounce authority. Afterward, all authority-gated",
+        "instructions (`set_*`, `renounce`) revert permanently — because the stored authority is set to",
+        "the default (unsignable) pubkey, and no one can ever pass the has_one check again."
+      ],
+      "discriminator": [
+        78,
+        110,
+        117,
+        127,
+        89,
+        23,
+        253,
+        153
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "signer": true,
+          "relations": [
+            "config"
+          ]
+        },
+        {
+          "name": "config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  111,
+                  110,
+                  97,
+                  116,
+                  101,
+                  45,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config.config_seed",
+                "account": "DonateConfig"
+              }
+            ]
+          }
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "reschedule_raydium_migration",
+      "discriminator": [
+        19,
+        137,
+        73,
+        196,
+        12,
+        101,
+        176,
+        240
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "signer": true,
+          "address": "FJF6YMp72V8NHUniRZxweeZd5CyyTNYY96dUKuaG2kmw",
+          "relations": [
+            "config"
+          ]
+        },
+        {
+          "name": "config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  111,
+                  110,
+                  97,
+                  116,
+                  101,
+                  45,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config.config_seed",
+                "account": "DonateConfig"
+              }
+            ]
+          },
+          "relations": [
+            "migration"
+          ]
+        },
+        {
+          "name": "migration",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  114,
+                  97,
+                  121,
+                  100,
+                  105,
+                  117,
+                  109,
+                  45,
+                  109,
+                  105,
+                  103,
+                  114,
+                  97,
+                  116,
+                  105,
+                  111,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config"
+              }
+            ]
+          }
+        }
+      ],
+      "args": [
+        {
+          "name": "resume_ts",
+          "type": "i64"
+        }
+      ]
+    },
+    {
+      "name": "resume_raydium_now",
+      "discriminator": [
+        24,
+        158,
+        80,
+        159,
+        225,
+        55,
+        207,
+        164
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "signer": true,
+          "address": "FJF6YMp72V8NHUniRZxweeZd5CyyTNYY96dUKuaG2kmw",
+          "relations": [
+            "config"
+          ]
+        },
+        {
+          "name": "config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  111,
+                  110,
+                  97,
+                  116,
+                  101,
+                  45,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config.config_seed",
+                "account": "DonateConfig"
+              }
+            ]
+          },
+          "relations": [
+            "migration",
+            "treasury_burn"
+          ]
+        },
+        {
+          "name": "migration",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  114,
+                  97,
+                  121,
+                  100,
+                  105,
+                  117,
+                  109,
+                  45,
+                  109,
+                  105,
+                  103,
+                  114,
+                  97,
+                  116,
+                  105,
+                  111,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config"
+              }
+            ]
+          }
+        },
+        {
+          "name": "treasury_burn",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  114,
+                  101,
+                  97,
+                  115,
+                  117,
+                  114,
+                  121,
+                  45,
+                  98,
+                  117,
+                  114,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config"
+              }
+            ]
+          }
+        },
+        {
+          "name": "treasury"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "seed_leg",
+      "docs": [
+        "permissionless, **one-shot per user**: backfill the small-area bookkeeping for an",
+        "account that predates it.",
+        "",
+        "`leg_power` and the uplines' `direct_ge6` are subtree aggregates — they cannot be derived",
+        "from any single account's stored state, so each user contributes its own figures exactly",
+        "once: `synced_power` is added to its own `leg_power` and to that of every upline within",
+        "`LEG_UPLINE` generations, and the direct upline's star counter picks this user up if its",
+        "cached level is already >= `STAR_COUNT_LEVEL`.",
+        "",
+        "Seeded from `synced_power` rather than `power` deliberately: that is the figure already",
+        "reflected in every upline's `team_power`, and keeping the two in lockstep is what preserves",
+        "`Σ(child.leg_power) ≡ parent.team_power`.",
+        "",
+        "Idempotent via `FLAG_LEG_SEEDED`, and `sync_level` skips leg/star propagation for an",
+        "unseeded user, so the seed and the Δ stream can never double-count each other — in either",
+        "order. Accounts created *after* this upgrade are born seeded (see `bind_referrer`), so this",
+        "instruction rejects them: their zero starting power is already reflected everywhere."
+      ],
+      "discriminator": [
+        254,
+        69,
+        112,
+        210,
+        228,
+        154,
+        13,
+        143
+      ],
+      "accounts": [
+        {
+          "name": "config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  111,
+                  110,
+                  97,
+                  116,
+                  101,
+                  45,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config.config_seed",
+                "account": "DonateConfig"
+              }
+            ]
+          }
+        },
+        {
+          "name": "user_stake",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  111,
+                  110,
+                  97,
+                  116,
+                  101,
+                  45,
+                  117,
+                  115,
+                  101,
+                  114
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config"
+              },
+              {
+                "kind": "account",
+                "path": "user_stake.owner",
+                "account": "UserStake"
+              }
+            ]
+          }
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "set_claim_fee",
+      "docs": [
+        "authority-only: configure the withdrawal fee (base/anti-dump tiers/distribution) and the time gates.",
+        "The \"blackhole\" share is no longer transferred to any account; instead it is `burn`ed directly against the treasury's Beta inside `claim` (truly destroyed),",
+        "so there is no longer an admin-specifiable blackhole destination here (removing the \"fees siphoned away\" path)."
+      ],
+      "discriminator": [
+        124,
+        3,
+        184,
+        17,
+        133,
+        67,
+        255,
+        50
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "signer": true,
+          "relations": [
+            "config"
+          ]
+        },
+        {
+          "name": "config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  111,
+                  110,
+                  97,
+                  116,
+                  101,
+                  45,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config.config_seed",
+                "account": "DonateConfig"
+              }
+            ]
+          }
+        }
+      ],
+      "args": [
+        {
+          "name": "base_bps",
+          "type": "u16"
+        },
+        {
+          "name": "drop_bps",
+          "type": {
+            "array": [
+              "u16",
+              4
+            ]
+          }
+        },
+        {
+          "name": "tier_bps",
+          "type": {
+            "array": [
+              "u16",
+              4
+            ]
+          }
+        },
+        {
+          "name": "operations_bps",
+          "type": "u16"
+        },
+        {
+          "name": "blackhole_bps",
+          "type": "u16"
+        },
+        {
+          "name": "first_delay_secs",
+          "type": "i64"
+        }
+      ]
+    },
+    {
+      "name": "set_import_manifest",
+      "discriminator": [
+        11,
+        116,
+        19,
+        233,
+        220,
+        54,
+        187,
+        23
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "signer": true,
+          "relations": [
+            "config"
+          ]
+        },
+        {
+          "name": "config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  111,
+                  110,
+                  97,
+                  116,
+                  101,
+                  45,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config.config_seed",
+                "account": "DonateConfig"
+              }
+            ]
+          }
+        }
+      ],
+      "args": [
+        {
+          "name": "slot",
+          "type": "u64"
+        },
+        {
+          "name": "digest",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        },
+        {
+          "name": "ordered_hash",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        },
+        {
+          "name": "count",
+          "type": "u32"
+        },
+        {
+          "name": "power",
+          "type": "u128"
+        }
+      ]
+    },
+    {
+      "name": "set_keeper",
+      "docs": [
+        "authority-only: set the optional default cranker (scheduled trigger) identity, keeper."
+      ],
+      "discriminator": [
+        102,
+        94,
+        23,
+        78,
+        157,
+        222,
+        243,
+        214
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "signer": true,
+          "relations": [
+            "config"
+          ]
+        },
+        {
+          "name": "config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  111,
+                  110,
+                  97,
+                  116,
+                  101,
+                  45,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config.config_seed",
+                "account": "DonateConfig"
+              }
+            ]
+          }
+        }
+      ],
+      "args": [
+        {
+          "name": "keeper",
+          "type": "pubkey"
+        }
+      ]
+    },
+    {
+      "name": "set_level_reward_rate",
+      "docs": [
+        "Change the total V1–V8 budget rate; previously accrued time uses the old rate."
+      ],
+      "discriminator": [
+        114,
+        66,
+        7,
+        60,
+        93,
+        214,
+        64,
+        22
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "signer": true
+        },
+        {
+          "name": "config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  111,
+                  110,
+                  97,
+                  116,
+                  101,
+                  45,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config.config_seed",
+                "account": "DonateConfig"
+              }
+            ]
+          }
+        },
+        {
+          "name": "treasury"
+        }
+      ],
+      "args": [
+        {
+          "name": "rate_bps",
+          "type": "u16"
+        }
+      ]
+    },
+    {
+      "name": "set_level_rewards",
+      "discriminator": [
+        212,
+        231,
+        198,
+        34,
+        223,
+        90,
+        101,
+        169
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "signer": true
+        },
+        {
+          "name": "config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  111,
+                  110,
+                  97,
+                  116,
+                  101,
+                  45,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config.config_seed",
+                "account": "DonateConfig"
+              }
+            ]
+          }
+        },
+        {
+          "name": "treasury"
+        }
+      ],
+      "args": [
+        {
+          "name": "weights",
+          "type": {
+            "array": [
+              "u16",
+              8
+            ]
+          }
+        },
+        {
+          "name": "share_cap_bps",
+          "type": "u16"
+        }
+      ]
+    },
+    {
+      "name": "set_levels",
+      "discriminator": [
+        52,
+        141,
+        212,
+        187,
+        137,
+        104,
+        174,
+        242
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "signer": true
+        },
+        {
+          "name": "config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  111,
+                  110,
+                  97,
+                  116,
+                  101,
+                  45,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config.config_seed",
+                "account": "DonateConfig"
+              }
+            ]
+          }
+        },
+        {
+          "name": "treasury"
+        }
+      ],
+      "args": [
+        {
+          "name": "min_power",
+          "type": {
+            "array": [
+              "u64",
+              8
+            ]
+          }
+        },
+        {
+          "name": "min_team",
+          "type": {
+            "array": [
+              "u64",
+              8
+            ]
+          }
+        },
+        {
+          "name": "min_small",
+          "type": {
+            "array": [
+              "u64",
+              8
+            ]
+          }
+        },
+        {
+          "name": "min_star",
+          "type": {
+            "array": [
+              "u8",
+              8
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "set_params",
+      "docs": [
+        "authority-only: adjust the fund-split ratios + economic params (the bps values must sum to 10000)."
+      ],
+      "discriminator": [
+        27,
+        234,
+        178,
+        52,
+        147,
+        2,
+        187,
+        141
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "signer": true,
+          "relations": [
+            "config"
+          ]
+        },
+        {
+          "name": "config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  111,
+                  110,
+                  97,
+                  116,
+                  101,
+                  45,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config.config_seed",
+                "account": "DonateConfig"
+              }
+            ]
+          }
+        },
+        {
+          "name": "pool"
+        },
+        {
+          "name": "treasury"
+        }
+      ],
+      "args": [
+        {
+          "name": "params",
+          "type": {
+            "defined": {
+              "name": "InitializeParams"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "set_payout_wallets",
+      "discriminator": [
+        86,
+        252,
+        47,
+        34,
+        75,
+        138,
+        158,
+        216
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "signer": true,
+          "relations": [
+            "config"
+          ]
+        },
+        {
+          "name": "config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  111,
+                  110,
+                  97,
+                  116,
+                  101,
+                  45,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config.config_seed",
+                "account": "DonateConfig"
+              }
+            ]
+          }
+        }
+      ],
+      "args": [
+        {
+          "name": "operations_wallet",
+          "type": "pubkey"
+        },
+        {
+          "name": "lp_recipient",
+          "type": "pubkey"
+        }
+      ]
+    },
+    {
+      "name": "set_price_deviation",
+      "docs": [
+        "Update every oracle/transaction deviation check. Does not alter prices,",
+        "observation history, freshness or breaker state."
+      ],
+      "discriminator": [
+        245,
+        26,
+        33,
+        212,
+        43,
+        199,
+        197,
+        163
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "signer": true,
+          "relations": [
+            "config"
+          ]
+        },
+        {
+          "name": "config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  111,
+                  110,
+                  97,
+                  116,
+                  101,
+                  45,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config.config_seed",
+                "account": "DonateConfig"
+              }
+            ]
+          }
+        }
+      ],
+      "args": [
+        {
+          "name": "max_deviation_bps",
+          "type": "u16"
+        }
+      ]
+    },
+    {
+      "name": "set_promotion",
+      "docs": [
+        "authority-only: set the three per-generation tables for the \"promotion reward\" (generational promotion reward), plus",
+        "the power threshold for a \"valid direct referral\". Index `g-1` maps to the `g`-th generation upline (the nearest upline is generation 1):",
+        "- `rate_bps[g-1]`: that generation's rate (bps; the accounting base = the Beta the user takes in this `claim`).",
+        "- `min_direct[g-1]`: the \"valid direct referral count\" required for that generation (invitee power ≥ `valid_invite_min_power`).",
+        "- `min_power[g-1]`: the \"upline's own power\" required for that generation (same units as `UserStake.power`).",
+        "The three tables + threshold all live on-chain, are adjustable at any time, and need no redeploy. Each rate must not exceed 100% (BPS_DENOM).",
+        "This instruction only writes config, it does not pay out; the promotion reward is accounted inside `claim` and claimed by the upline via `claim` at the cost of power."
+      ],
+      "discriminator": [
+        143,
+        85,
+        122,
+        50,
+        110,
+        153,
+        239,
+        102
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "signer": true,
+          "relations": [
+            "config"
+          ]
+        },
+        {
+          "name": "config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  111,
+                  110,
+                  97,
+                  116,
+                  101,
+                  45,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config.config_seed",
+                "account": "DonateConfig"
+              }
+            ]
+          }
+        }
+      ],
+      "args": [
+        {
+          "name": "rate_bps",
+          "type": {
+            "array": [
+              "u16",
+              10
+            ]
+          }
+        },
+        {
+          "name": "min_direct",
+          "type": {
+            "array": [
+              "u16",
+              10
+            ]
+          }
+        },
+        {
+          "name": "min_power",
+          "type": {
+            "array": [
+              "u128",
+              10
+            ]
+          }
+        },
+        {
+          "name": "valid_invite_min_power",
+          "type": "u128"
+        }
+      ]
+    },
+    {
+      "name": "set_v_dividend_switch",
+      "docs": [
+        "Toggle level accrual after settling the old enabled state."
+      ],
+      "discriminator": [
+        78,
+        37,
+        241,
+        71,
+        41,
+        100,
+        105,
+        124
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "signer": true
+        },
+        {
+          "name": "config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  111,
+                  110,
+                  97,
+                  116,
+                  101,
+                  45,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config.config_seed",
+                "account": "DonateConfig"
+              }
+            ]
+          }
+        },
+        {
+          "name": "treasury"
+        }
+      ],
+      "args": [
+        {
+          "name": "on",
+          "type": "bool"
+        }
+      ]
+    },
+    {
+      "name": "sync_level",
+      "docs": [
+        "permissionless: propagate a user's power change **upward** along the invite chain, refreshing in place",
+        "the levels of each upline along the way (and of the user). The upline chain A1..Ak of `user_stake` (k = min(depth, 10), nearest",
+        "upline first) is passed as `remaining_accounts`, all of which must be **writable** UserStake PDAs.",
+        "",
+        "It uses `synced_power` (the already-propagated baseline of the user's own power) for delta (Δ) tracking, making it **idempotent and self-healing**: the dApp",
+        "places it immediately after every donate/claim, while permissionless reruns can reconcile stale caches after administrative threshold changes. Δ affects exactly",
+        "the team power of the user's levels 1..10 uplines (level 1 also includes direct-referral power), so at most 10 levels are traversed.",
+        "",
+        "Chain safety: each hop requires `anc.owner == the expected parent` (bound to the immutable `referrer`) and re-checks the canonical PDA,",
+        "so the caller can only pass real uplines and cannot inflate team power. It enforces \"reach the root **or** exactly 10 levels\", preventing silent under-updates",
+        "caused by omitting uplines."
+      ],
+      "discriminator": [
+        120,
+        230,
+        71,
+        198,
+        250,
+        189,
+        234,
+        226
+      ],
+      "accounts": [
+        {
+          "name": "config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  111,
+                  110,
+                  97,
+                  116,
+                  101,
+                  45,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config.config_seed",
+                "account": "DonateConfig"
+              }
+            ]
+          }
+        },
+        {
+          "name": "user_stake",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  111,
+                  110,
+                  97,
+                  116,
+                  101,
+                  45,
+                  117,
+                  115,
+                  101,
+                  114
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config"
+              },
+              {
+                "kind": "account",
+                "path": "user_stake.owner",
+                "account": "UserStake"
+              }
+            ]
+          }
+        },
+        {
+          "name": "treasury"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "transfer_authority",
+      "docs": [
+        "authority-only: **transfer** admin to `new_authority`. Reuses the same has_one gate as renounce.",
+        "Rejects the all-zero address so a transfer can never silently become an irreversible renounce",
+        "(use renounce_authority explicitly for that)."
+      ],
+      "discriminator": [
+        48,
+        169,
+        76,
+        72,
+        229,
+        180,
+        55,
+        161
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "signer": true,
+          "relations": [
+            "config"
+          ]
+        },
+        {
+          "name": "config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  111,
+                  110,
+                  97,
+                  116,
+                  101,
+                  45,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config.config_seed",
+                "account": "DonateConfig"
+              }
+            ]
+          }
+        }
+      ],
+      "args": [
+        {
+          "name": "new_authority",
+          "type": "pubkey"
+        }
+      ]
+    }
+  ],
+  "accounts": [
+    {
+      "name": "ClaimAllowance",
+      "discriminator": [
+        113,
+        88,
+        113,
+        212,
+        28,
+        68,
+        24,
+        190
+      ]
+    },
+    {
+      "name": "DonateConfig",
+      "discriminator": [
+        70,
+        40,
+        241,
+        165,
+        207,
+        92,
+        2,
+        188
+      ]
+    },
+    {
+      "name": "MaxLegRefresh",
+      "discriminator": [
+        167,
+        79,
+        255,
+        168,
+        5,
+        233,
+        174,
+        118
+      ]
+    },
+    {
+      "name": "Pool",
+      "discriminator": [
+        241,
+        154,
+        109,
+        4,
+        17,
+        177,
+        109,
+        188
+      ]
+    },
+    {
+      "name": "PriceObservation",
+      "discriminator": [
+        23,
+        247,
+        5,
+        122,
+        166,
+        121,
+        62,
+        91
+      ]
+    },
+    {
+      "name": "RaydiumMigration",
+      "discriminator": [
+        111,
+        89,
+        161,
+        230,
+        168,
+        46,
+        191,
+        211
+      ]
+    },
+    {
+      "name": "RaydiumUserCheckpoint",
+      "discriminator": [
+        61,
+        49,
+        160,
+        7,
+        155,
+        178,
+        157,
+        138
+      ]
+    },
+    {
+      "name": "SolEscrow",
+      "discriminator": [
+        75,
+        199,
+        250,
+        63,
+        244,
+        209,
+        235,
+        120
+      ]
+    },
+    {
+      "name": "TreasuryBurn",
+      "discriminator": [
+        153,
+        31,
+        134,
+        6,
+        84,
+        191,
+        54,
+        2
+      ]
+    },
+    {
+      "name": "UserStake",
+      "discriminator": [
+        102,
+        53,
+        163,
+        107,
+        9,
+        138,
+        87,
+        153
+      ]
+    }
+  ],
+  "events": [
+    {
+      "name": "AllocateEvent",
+      "discriminator": [
+        140,
+        230,
+        37,
+        132,
+        190,
+        177,
+        252,
+        38
+      ]
+    },
+    {
+      "name": "BindEvent",
+      "discriminator": [
+        80,
+        120,
+        175,
+        95,
+        56,
+        33,
+        92,
+        238
+      ]
+    },
+    {
+      "name": "ClaimEvent",
+      "discriminator": [
+        93,
+        15,
+        70,
+        170,
+        48,
+        140,
+        212,
+        219
+      ]
+    },
+    {
+      "name": "DonateEvent",
+      "discriminator": [
+        108,
+        195,
+        128,
+        89,
+        65,
+        3,
+        166,
+        91
+      ]
+    },
+    {
+      "name": "MigrationAbortFinalizedEvent",
+      "discriminator": [
+        117,
+        204,
+        254,
+        101,
+        128,
+        100,
+        227,
+        223
+      ]
+    },
+    {
+      "name": "MigrationAbortStartedEvent",
+      "discriminator": [
+        112,
+        178,
+        218,
+        200,
+        122,
+        16,
+        215,
+        196
+      ]
+    },
+    {
+      "name": "MigrationUsersClosedEvent",
+      "discriminator": [
+        145,
+        185,
+        157,
+        5,
+        123,
+        112,
+        30,
+        202
+      ]
+    },
+    {
+      "name": "PriceDeviationChanged",
+      "discriminator": [
+        133,
+        228,
+        54,
+        58,
+        169,
+        215,
+        43,
+        133
+      ]
+    },
+    {
+      "name": "PriceSyncEvent",
+      "discriminator": [
+        202,
+        93,
+        123,
+        19,
+        89,
+        146,
+        124,
+        89
+      ]
+    },
+    {
+      "name": "RaydiumEarlyResume",
+      "discriminator": [
+        21,
+        54,
+        95,
+        171,
+        107,
+        58,
+        39,
+        199
+      ]
+    },
+    {
+      "name": "SeedUserEvent",
+      "discriminator": [
+        168,
+        141,
+        157,
+        18,
+        220,
+        92,
+        136,
+        179
+      ]
+    },
+    {
+      "name": "SeedingFinalizedEvent",
+      "discriminator": [
+        74,
+        27,
+        222,
+        226,
+        88,
+        201,
+        141,
+        169
+      ]
+    },
+    {
+      "name": "SetAlphaEvent",
+      "discriminator": [
+        215,
+        88,
+        123,
+        226,
+        51,
+        182,
+        184,
+        146
+      ]
+    },
+    {
+      "name": "TreasuryBurnEvent",
+      "discriminator": [
+        8,
+        53,
+        94,
+        20,
+        91,
+        146,
+        215,
+        241
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "BadClaimPercent",
+      "msg": "Claim percentage must be 25, 50, 75 or 100 percent"
+    },
+    {
+      "code": 6001,
+      "name": "PriceUnavailable",
+      "msg": "Price observation is warming, stale or circuit-broken"
+    },
+    {
+      "code": 6002,
+      "name": "MigrationPhase",
+      "msg": "Instruction is unavailable in the current migration phase"
+    },
+    {
+      "code": 6003,
+      "name": "Unauthorized",
+      "msg": "Signer is not authorized"
+    },
+    {
+      "code": 6004,
+      "name": "BadRatios",
+      "msg": "Split ratios invalid (must sum to 10000) or param out of range"
+    },
+    {
+      "code": 6005,
+      "name": "SeedingLocked",
+      "msg": "Migration seeding is finalized; admin_seed_user is permanently disabled"
+    },
+    {
+      "code": 6006,
+      "name": "ReferrerRequired",
+      "msg": "A referrer must be bound before donating"
+    },
+    {
+      "code": 6007,
+      "name": "SelfReferral",
+      "msg": "Cannot refer yourself"
+    },
+    {
+      "code": 6008,
+      "name": "DonateCapExceeded",
+      "msg": "Donation exceeds the per-donation USDT cap"
+    },
+    {
+      "code": 6009,
+      "name": "PriceUnset",
+      "msg": "Price is not set"
+    },
+    {
+      "code": 6010,
+      "name": "EmptyPool",
+      "msg": "Pool reserves are empty"
+    },
+    {
+      "code": 6011,
+      "name": "NothingToClaim",
+      "msg": "Nothing to claim"
+    },
+    {
+      "code": 6012,
+      "name": "ZeroAmount",
+      "msg": "Zero amount"
+    },
+    {
+      "code": 6013,
+      "name": "InsufficientEscrow",
+      "msg": "Amount exceeds escrow balance"
+    },
+    {
+      "code": 6014,
+      "name": "WrongMint",
+      "msg": "Account mint/owner does not match the expected token"
+    },
+    {
+      "code": 6015,
+      "name": "MathOverflow",
+      "msg": "Arithmetic overflow"
+    },
+    {
+      "code": 6016,
+      "name": "BadChain",
+      "msg": "Invalid upline chain (writability/ownership/linkage/PDA/length)"
+    },
+    {
+      "code": 6017,
+      "name": "ClaimTooEarly",
+      "msg": "First claim not allowed until T+delay after the first donation"
+    },
+    {
+      "code": 6018,
+      "name": "ClaimCooldown",
+      "msg": "Claim cooldown has not elapsed"
+    },
+    {
+      "code": 6019,
+      "name": "BadTimeWindow",
+      "msg": "day_window_secs must be >= 1"
+    },
+    {
+      "code": 6020,
+      "name": "OpsLegMissing",
+      "msg": "Donation must bundle an allocate_operations_direct ix covering the configured operations leg in the same tx"
+    },
+    {
+      "code": 6021,
+      "name": "SolDonationLegMissing",
+      "msg": "SOL donation must bundle an allocate_sol_donation ix covering the full amount in the same tx"
+    },
+    {
+      "code": 6022,
+      "name": "SyncLevelMissing",
+      "msg": "Power-changing donate/claim must be followed immediately by sync_level for the same user"
+    },
+    {
+      "code": 6023,
+      "name": "StaleLevel",
+      "msg": "User stake level/power snapshot is stale; run sync_level before claiming this dividend"
+    },
+    {
+      "code": 6024,
+      "name": "SyncTooSoon",
+      "msg": "Price observation called before the minimum interval elapsed"
+    },
+    {
+      "code": 6025,
+      "name": "PoolPriceDeviation",
+      "msg": "Live pool price deviates beyond the configured cap vs the anchor (possible manipulation)"
+    },
+    {
+      "code": 6026,
+      "name": "BadDecimals",
+      "msg": "Mint decimals do not match the protocol assumption"
+    },
+    {
+      "code": 6027,
+      "name": "InvalidAuthority",
+      "msg": "New authority must not be the default/zero pubkey"
+    },
+    {
+      "code": 6028,
+      "name": "PowerCapExceeded",
+      "msg": "Current power would exceed the per-user cap (300,000)"
+    },
+    {
+      "code": 6029,
+      "name": "InvalidRentRefundAccounts",
+      "msg": "Rent refund accounts must be the donating signer followed by the System Program"
+    },
+    {
+      "code": 6030,
+      "name": "BadVaultAccount",
+      "msg": "Vault account does not match the one recorded in config"
+    },
+    {
+      "code": 6031,
+      "name": "AlreadySeeded",
+      "msg": "This account's small-area (leg) bookkeeping has already been seeded"
+    },
+    {
+      "code": 6032,
+      "name": "AlreadyMigrated",
+      "msg": "This one-shot migration has already run"
+    },
+    {
+      "code": 6033,
+      "name": "MintNotFinal",
+      "msg": "New FLOCK mint must have its mint and freeze authority revoked"
+    },
+    {
+      "code": 6034,
+      "name": "BadLpRecipient",
+      "msg": "LP recipient must not be the default pubkey or the incinerator"
+    },
+    {
+      "code": 6035,
+      "name": "MigrationSnapshotMismatch",
+      "msg": "Vault balances differ from the expected migration snapshot"
+    },
+    {
+      "code": 6036,
+      "name": "LockerNotFinal",
+      "msg": "LP locker must be the bound upgradeable-loader program with canonical ProgramData"
+    },
+    {
+      "code": 6037,
+      "name": "EscrowPermissionsChanged",
+      "msg": "External swap changed escrow identity, token permissions or account state"
+    },
+    {
+      "code": 6038,
+      "name": "ExternalSwapDebit",
+      "msg": "External swap debit differs from the authorized fixed input"
+    },
+    {
+      "code": 6039,
+      "name": "ExternalSwapOutput",
+      "msg": "External swap output is below the required minimum"
+    },
+    {
+      "code": 6040,
+      "name": "BadPriceDeviation",
+      "msg": "Price deviation must be between 1 and 10000 bps"
+    },
+    {
+      "code": 6041,
+      "name": "EmptyCloseBatch",
+      "msg": "At least one UserStake account is required in a close batch"
+    },
+    {
+      "code": 6042,
+      "name": "CloseBatchTooLarge",
+      "msg": "The UserStake close batch exceeds the on-chain limit"
+    },
+    {
+      "code": 6043,
+      "name": "DuplicateCloseAccount",
+      "msg": "A UserStake close batch contains the same account more than once"
+    },
+    {
+      "code": 6044,
+      "name": "InvalidCloseAccount",
+      "msg": "The supplied account is not a canonical closable UserStake"
+    },
+    {
+      "code": 6045,
+      "name": "MigrationAbortCountMismatch",
+      "msg": "The UserStake close count exceeds the frozen abort commitment"
+    },
+    {
+      "code": 6046,
+      "name": "MigrationAbortIncomplete",
+      "msg": "Not every frozen UserStake account has been closed"
+    },
+    {
+      "code": 6047,
+      "name": "PowerChangeCpiForbidden",
+      "msg": "Power-changing donate/claim instructions cannot be invoked through CPI"
+    },
+    {
+      "code": 6048,
+      "name": "BadTreasuryBurnAccount",
+      "msg": "Treasury burn state, mint or vault does not match the canonical binding"
+    },
+    {
+      "code": 6049,
+      "name": "TreasuryBurnNotDue",
+      "msg": "No full treasury burn day has elapsed"
+    },
+    {
+      "code": 6050,
+      "name": "TreasuryBurnCatchUpRequired",
+      "msg": "Settle outstanding treasury burn periods with crank_treasury_burn first"
+    }
+  ],
+  "types": [
+    {
+      "name": "AllocateEvent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "amount_in",
+            "type": "u64"
+          },
+          {
+            "name": "min_out",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "BindEvent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "user",
+            "type": "pubkey"
+          },
+          {
+            "name": "referrer",
+            "type": "pubkey"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ClaimAllowance",
+      "docs": [
+        "Sidecar preserves the deployed UserStake layout. Credit is USDT-e6 * TOKEN_UNIT;",
+        "consuming one FLOCK base unit costs exactly beta_usd credit units."
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "config",
+            "type": "pubkey"
+          },
+          {
+            "name": "owner",
+            "type": "pubkey"
+          },
+          {
+            "name": "version",
+            "type": "u8"
+          },
+          {
+            "name": "checkpoint_ts",
+            "type": "i64"
+          },
+          {
+            "name": "credit",
+            "type": "u128"
+          },
+          {
+            "name": "remainder",
+            "type": "u128"
+          },
+          {
+            "name": "denominator",
+            "type": "u64"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ClaimEvent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "user",
+            "type": "pubkey"
+          },
+          {
+            "name": "percent_bps",
+            "type": "u16"
+          },
+          {
+            "name": "static_beta",
+            "type": "u64"
+          },
+          {
+            "name": "promotion_beta",
+            "type": "u64"
+          },
+          {
+            "name": "level_beta",
+            "type": "u64"
+          },
+          {
+            "name": "beta",
+            "type": "u64"
+          },
+          {
+            "name": "value",
+            "type": "u128"
+          },
+          {
+            "name": "power_left",
+            "type": "u128"
+          },
+          {
+            "name": "fee",
+            "type": "u64"
+          },
+          {
+            "name": "alpha_out",
+            "type": "u64"
+          },
+          {
+            "name": "forfeited_beta",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "DonateConfig",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "startup_mode",
+            "type": {
+              "defined": {
+                "name": "StartupMode"
+              }
+            }
+          },
+          {
+            "name": "ops_alpha_budget",
+            "type": "u64"
+          },
+          {
+            "name": "sol_budget",
+            "type": "u64"
+          },
+          {
+            "name": "sol_alpha_budget",
+            "type": "u64"
+          },
+          {
+            "name": "price_ready",
+            "type": "bool"
+          },
+          {
+            "name": "price_breaker",
+            "type": "bool"
+          },
+          {
+            "name": "like_sol_anchor",
+            "type": "u128"
+          },
+          {
+            "name": "emission_remainder",
+            "type": "u128"
+          },
+          {
+            "name": "reward_remainder",
+            "type": "u128"
+          },
+          {
+            "name": "migration_phase",
+            "type": "u8"
+          },
+          {
+            "name": "manifest_set",
+            "type": "bool"
+          },
+          {
+            "name": "snapshot_slot",
+            "type": "u64"
+          },
+          {
+            "name": "snapshot_digest",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "expected_import_hash",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "import_hash",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "expected_user_count",
+            "type": "u32"
+          },
+          {
+            "name": "expected_power",
+            "type": "u128"
+          },
+          {
+            "name": "rebuilt_user_count",
+            "type": "u32"
+          },
+          {
+            "name": "activation_ts",
+            "type": "i64"
+          },
+          {
+            "name": "authority",
+            "type": "pubkey"
+          },
+          {
+            "name": "keeper",
+            "type": "pubkey"
+          },
+          {
+            "name": "root_referrer",
+            "type": "pubkey"
+          },
+          {
+            "name": "config_seed",
+            "docs": [
+              "Immutable config PDA seed, initialized from the new FLOCK mint."
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "alpha_mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "pool",
+            "type": "pubkey"
+          },
+          {
+            "name": "base_vault",
+            "type": "pubkey"
+          },
+          {
+            "name": "quote_vault",
+            "type": "pubkey"
+          },
+          {
+            "name": "treasury",
+            "type": "pubkey"
+          },
+          {
+            "name": "alpha_escrow",
+            "type": "pubkey"
+          },
+          {
+            "name": "sol_escrow",
+            "type": "pubkey"
+          },
+          {
+            "name": "operations_wallet",
+            "type": "pubkey"
+          },
+          {
+            "name": "beta_mint",
+            "docs": [
+              "FLOCK mint bound at initialization."
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "lp_recipient",
+            "docs": [
+              "Informational LP recipient. Raydium migration sets the official incinerator;",
+              "the actual destination is independently pinned by the venue account constraints."
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "bps_operations",
+            "type": "u16"
+          },
+          {
+            "name": "bps_liquidity",
+            "type": "u16"
+          },
+          {
+            "name": "bps_treasury",
+            "type": "u16"
+          },
+          {
+            "name": "power_multiplier_bps",
+            "type": "u16"
+          },
+          {
+            "name": "donate_cap_usdt",
+            "type": "u64"
+          },
+          {
+            "name": "daily_emission_bps",
+            "type": "u16"
+          },
+          {
+            "name": "user_daily_cap_bps",
+            "type": "u16"
+          },
+          {
+            "name": "blackhole_floor",
+            "type": "u64"
+          },
+          {
+            "name": "max_slippage_bps",
+            "type": "u16"
+          },
+          {
+            "name": "sol_usd",
+            "type": "u64"
+          },
+          {
+            "name": "alpha_usd",
+            "type": "u64"
+          },
+          {
+            "name": "beta_usd",
+            "type": "u64"
+          },
+          {
+            "name": "beta_usd_anchor",
+            "type": "u64"
+          },
+          {
+            "name": "last_sync_ts",
+            "type": "i64"
+          },
+          {
+            "name": "min_sync_interval_secs",
+            "type": "i64"
+          },
+          {
+            "name": "max_sync_deviation_bps",
+            "type": "u16"
+          },
+          {
+            "name": "claim_floor_tol_bps",
+            "type": "u16"
+          },
+          {
+            "name": "pool_ratio_anchor",
+            "type": "u128"
+          },
+          {
+            "name": "acc_reward_per_power",
+            "type": "u128"
+          },
+          {
+            "name": "total_power",
+            "type": "u128"
+          },
+          {
+            "name": "last_update_ts",
+            "type": "i64"
+          },
+          {
+            "name": "level_min_power",
+            "type": {
+              "array": [
+                "u64",
+                8
+              ]
+            }
+          },
+          {
+            "name": "level_min_team",
+            "type": {
+              "array": [
+                "u64",
+                8
+              ]
+            }
+          },
+          {
+            "name": "level_min_small",
+            "docs": [
+              "Small-area performance threshold per level = `team_power − max_leg`, i.e. team",
+              "performance excluding the single largest direct leg. 0 = no requirement."
+            ],
+            "type": {
+              "array": [
+                "u64",
+                8
+              ]
+            }
+          },
+          {
+            "name": "level_min_star",
+            "docs": [
+              "Star gate per level: minimum number of direct children whose cached level is at least",
+              "`STAR_COUNT_LEVEL`. Must be 0 for every level below `STAR_COUNT_LEVEL` (enforced in",
+              "`set_levels`); V7/V8 use it for the \"2 direct referrals at V6\" requirement."
+            ],
+            "type": {
+              "array": [
+                "u8",
+                8
+              ]
+            }
+          },
+          {
+            "name": "level_share_cap_bps",
+            "type": "u16"
+          },
+          {
+            "name": "level_weights",
+            "docs": [
+              "Normalized reward weights, index 0 = V1 through 7 = V8."
+            ],
+            "type": {
+              "array": [
+                "u16",
+                8
+              ]
+            }
+          },
+          {
+            "name": "acc_per_v",
+            "docs": [
+              "Per-tier FLOCK accumulator per enrolled member, scaled by ACC_SCALE."
+            ],
+            "type": {
+              "array": [
+                "u128",
+                8
+              ]
+            }
+          },
+          {
+            "name": "total_v_weight",
+            "docs": [
+              "Number of enrolled members per tier."
+            ],
+            "type": {
+              "array": [
+                "u128",
+                8
+              ]
+            }
+          },
+          {
+            "name": "leg_seeded_count",
+            "docs": [
+              "Number of accounts `seed_leg` has processed — lets the rollout tell when the one-shot",
+              "small-area backfill is complete without scanning every account."
+            ],
+            "type": "u32"
+          },
+          {
+            "name": "seeding_locked",
+            "docs": [
+              "(2026-09 redesign) Migration lock for `admin_seed_user`. False while the fresh deploy is being",
+              "seeded with the migrated referrer/power snapshot; `finalize_seeding` flips it to true forever,",
+              "after which `admin_seed_user` is permanently rejected. A one-way latch — no un-lock instruction."
+            ],
+            "type": "bool"
+          },
+          {
+            "name": "seeded_user_count",
+            "docs": [
+              "Number of accounts `admin_seed_user` has created/seeded (rollout progress; parallels `leg_seeded_count`)."
+            ],
+            "type": "u32"
+          },
+          {
+            "name": "v_last_update_ts",
+            "type": "i64"
+          },
+          {
+            "name": "v_dividend_enabled",
+            "type": "bool"
+          },
+          {
+            "name": "promo_rate_bps",
+            "type": {
+              "array": [
+                "u16",
+                10
+              ]
+            }
+          },
+          {
+            "name": "promo_min_direct",
+            "type": {
+              "array": [
+                "u16",
+                10
+              ]
+            }
+          },
+          {
+            "name": "promo_min_power",
+            "type": {
+              "array": [
+                "u128",
+                10
+              ]
+            }
+          },
+          {
+            "name": "valid_invite_min_power",
+            "type": "u128"
+          },
+          {
+            "name": "total_burned",
+            "type": "u128"
+          },
+          {
+            "name": "claim_fee_base_bps",
+            "type": "u16"
+          },
+          {
+            "name": "claim_fee_drop_bps",
+            "type": {
+              "array": [
+                "u16",
+                4
+              ]
+            }
+          },
+          {
+            "name": "claim_fee_tier_bps",
+            "type": {
+              "array": [
+                "u16",
+                4
+              ]
+            }
+          },
+          {
+            "name": "claim_fee_operations_bps",
+            "type": "u16"
+          },
+          {
+            "name": "claim_fee_blackhole_bps",
+            "type": "u16"
+          },
+          {
+            "name": "claim_first_delay_secs",
+            "type": "i64"
+          },
+          {
+            "name": "day_window_secs",
+            "type": "i64"
+          },
+          {
+            "name": "sol_escrow_bump",
+            "type": "u8"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "DonateEvent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "user",
+            "type": "pubkey"
+          },
+          {
+            "name": "asset_is_sol",
+            "type": "bool"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          },
+          {
+            "name": "usdt_value",
+            "type": "u64"
+          },
+          {
+            "name": "forfeited_beta",
+            "docs": [
+              "Accrual zeroed by this donation because it had already overflowed the *pre-donation* release",
+              "budget (`pending_value > power`) and could never have been claimed. Normally 0 — non-zero only for",
+              "users whose emission had saturated against their power. Mirrors `ClaimEvent.forfeited_beta`."
+            ],
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "InitializeParams",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "bps_operations",
+            "type": "u16"
+          },
+          {
+            "name": "bps_liquidity",
+            "type": "u16"
+          },
+          {
+            "name": "bps_treasury",
+            "type": "u16"
+          },
+          {
+            "name": "power_multiplier_bps",
+            "type": "u16"
+          },
+          {
+            "name": "donate_cap_usdt",
+            "type": "u64"
+          },
+          {
+            "name": "daily_emission_bps",
+            "type": "u16"
+          },
+          {
+            "name": "user_daily_cap_bps",
+            "type": "u16"
+          },
+          {
+            "name": "day_window_secs",
+            "docs": [
+              "The seconds in a \"day\" that emission/daily-cap are based on (configurable for easy testing: 86400 on mainnet, 600/60 locally)."
+            ],
+            "type": "i64"
+          },
+          {
+            "name": "blackhole_floor",
+            "type": "u64"
+          },
+          {
+            "name": "max_slippage_bps",
+            "type": "u16"
+          },
+          {
+            "name": "keeper",
+            "type": "pubkey"
+          }
+        ]
+      }
+    },
+    {
+      "name": "MaxLegRefresh",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "initialized",
+            "type": "bool"
+          },
+          {
+            "name": "complete",
+            "type": "bool"
+          },
+          {
+            "name": "revision",
+            "type": "u64"
+          },
+          {
+            "name": "expected_children",
+            "type": "u32"
+          },
+          {
+            "name": "cursor",
+            "type": "u32"
+          },
+          {
+            "name": "maximum",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "MigrationAbortFinalizedEvent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "config",
+            "type": "pubkey"
+          },
+          {
+            "name": "authority",
+            "type": "pubkey"
+          },
+          {
+            "name": "closed_user_count",
+            "type": "u32"
+          }
+        ]
+      }
+    },
+    {
+      "name": "MigrationAbortStartedEvent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "config",
+            "type": "pubkey"
+          },
+          {
+            "name": "authority",
+            "type": "pubkey"
+          },
+          {
+            "name": "expected_user_count",
+            "type": "u32"
+          }
+        ]
+      }
+    },
+    {
+      "name": "MigrationUsersClosedEvent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "config",
+            "type": "pubkey"
+          },
+          {
+            "name": "authority",
+            "type": "pubkey"
+          },
+          {
+            "name": "batch_count",
+            "type": "u32"
+          },
+          {
+            "name": "refunded_lamports",
+            "type": "u64"
+          },
+          {
+            "name": "closed_user_count",
+            "type": "u32"
+          },
+          {
+            "name": "expected_user_count",
+            "type": "u32"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Observation",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "ts",
+            "type": "i64"
+          },
+          {
+            "name": "cumulative_sol",
+            "type": "u128"
+          },
+          {
+            "name": "cumulative_like",
+            "type": "u128"
+          },
+          {
+            "name": "cumulative_dex",
+            "type": "u128"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Pool",
+      "docs": [
+        "Pool — all on-chain state of a single pool; it is itself a PDA.",
+        "`#[derive(InitSpace)]` lets Anchor automatically compute the space this struct needs, for allocation at init."
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "cumulative_ts",
+            "type": "i64"
+          },
+          {
+            "name": "cumulative_price",
+            "docs": [
+              "Price-time counter modulo 2^128. Consumers must use wrapping subtraction over a bounded",
+              "window (the maximum possible raw price wraps no faster than once per 213 days)."
+            ],
+            "type": "u128"
+          },
+          {
+            "name": "cumulative_quote",
+            "type": "u128"
+          },
+          {
+            "name": "observed_base",
+            "type": "u64"
+          },
+          {
+            "name": "observed_quote",
+            "type": "u64"
+          },
+          {
+            "name": "authority",
+            "type": "pubkey"
+          },
+          {
+            "name": "base_mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "quote_mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "base_vault",
+            "type": "pubkey"
+          },
+          {
+            "name": "quote_vault",
+            "type": "pubkey"
+          },
+          {
+            "name": "lp_mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "buy_enabled",
+            "type": "bool"
+          },
+          {
+            "name": "sell_enabled",
+            "type": "bool"
+          },
+          {
+            "name": "fee_bps",
+            "type": "u16"
+          },
+          {
+            "name": "open_price",
+            "type": "u128"
+          },
+          {
+            "name": "open_day",
+            "type": "u32"
+          },
+          {
+            "name": "day_window_secs",
+            "type": "i64"
+          },
+          {
+            "name": "operator",
+            "type": "pubkey"
+          },
+          {
+            "name": "burn_bps",
+            "type": "u16"
+          },
+          {
+            "name": "burn_interval_secs",
+            "type": "i64"
+          },
+          {
+            "name": "last_burn_ts",
+            "type": "i64"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          },
+          {
+            "name": "total_lp",
+            "docs": [
+              "The pool's own LP share ledger (includes the MINIMUM_LIQUIDITY lock). Only this program's",
+              "add/remove move it. It is the share denominator instead of `lp_mint.supply`, because SPL Token",
+              "lets anyone burn LP held by an incinerator / System-Program-owned account without a signature,",
+              "and such an outside burn used to shrink the denominator and drain the vaults (2026-09-15).",
+              "With this ledger an outside burn only strands its own share inside the pool."
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "add_enabled",
+            "docs": [
+              "Legacy layout placeholders. These bytes never grant or restrict liquidity permissions.",
+              "Kept at the same offsets so existing Pool accounts need no reallocation."
+            ],
+            "type": "bool"
+          },
+          {
+            "name": "remove_enabled",
+            "type": "bool"
+          }
+        ]
+      }
+    },
+    {
+      "name": "PriceDeviationChanged",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "config",
+            "type": "pubkey"
+          },
+          {
+            "name": "authority",
+            "type": "pubkey"
+          },
+          {
+            "name": "old_bps",
+            "type": "u16"
+          },
+          {
+            "name": "new_bps",
+            "type": "u16"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "PriceObservation",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "config",
+            "type": "pubkey"
+          },
+          {
+            "name": "last_slot",
+            "type": "u64"
+          },
+          {
+            "name": "last_ts",
+            "type": "i64"
+          },
+          {
+            "name": "last_sol",
+            "type": "u128"
+          },
+          {
+            "name": "last_like",
+            "type": "u128"
+          },
+          {
+            "name": "last_dex",
+            "type": "u128"
+          },
+          {
+            "name": "cumulative_sol",
+            "type": "u128"
+          },
+          {
+            "name": "cumulative_like",
+            "type": "u128"
+          },
+          {
+            "name": "count",
+            "type": "u8"
+          },
+          {
+            "name": "next",
+            "type": "u8"
+          },
+          {
+            "name": "breaker",
+            "type": "bool"
+          },
+          {
+            "name": "observations",
+            "type": {
+              "array": [
+                {
+                  "defined": {
+                    "name": "Observation"
+                  }
+                },
+                32
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "PriceSyncEvent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "sol_usd",
+            "type": "u64"
+          },
+          {
+            "name": "alpha_usd",
+            "type": "u64"
+          },
+          {
+            "name": "beta_usd",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "RaydiumEarlyResume",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "config",
+            "type": "pubkey"
+          },
+          {
+            "name": "original_resume_ts",
+            "type": "i64"
+          },
+          {
+            "name": "effective_resume_ts",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "RaydiumMigration",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "config",
+            "type": "pubkey"
+          },
+          {
+            "name": "legacy_mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "legacy_treasury",
+            "type": "pubkey"
+          },
+          {
+            "name": "legacy_pool",
+            "type": "pubkey"
+          },
+          {
+            "name": "new_mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "target_pool",
+            "type": "pubkey"
+          },
+          {
+            "name": "fee_recipient",
+            "type": "pubkey"
+          },
+          {
+            "name": "supply",
+            "type": "u64"
+          },
+          {
+            "name": "treasury_balance",
+            "type": "u64"
+          },
+          {
+            "name": "cutoff_ts",
+            "type": "i64"
+          },
+          {
+            "name": "resume_ts",
+            "type": "i64"
+          },
+          {
+            "name": "expected_users",
+            "type": "u32"
+          },
+          {
+            "name": "checkpointed_users",
+            "type": "u32"
+          },
+          {
+            "name": "expected_hash",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "checkpoint_hash",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "open_day",
+            "type": "u32"
+          },
+          {
+            "name": "open_price",
+            "type": "u128"
+          },
+          {
+            "name": "bound",
+            "type": "bool"
+          },
+          {
+            "name": "completed",
+            "type": "bool"
+          }
+        ]
+      }
+    },
+    {
+      "name": "RaydiumUserCheckpoint",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "config",
+            "type": "pubkey"
+          },
+          {
+            "name": "owner",
+            "type": "pubkey"
+          },
+          {
+            "name": "cutoff_ts",
+            "type": "i64"
+          },
+          {
+            "name": "resume_ts",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "SeedUserEvent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "user",
+            "type": "pubkey"
+          },
+          {
+            "name": "referrer",
+            "type": "pubkey"
+          },
+          {
+            "name": "power",
+            "type": "u128"
+          },
+          {
+            "name": "power_granted",
+            "type": "u128"
+          }
+        ]
+      }
+    },
+    {
+      "name": "SeedingFinalizedEvent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "seeded_user_count",
+            "type": "u32"
+          }
+        ]
+      }
+    },
+    {
+      "name": "SetAlphaEvent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "alpha_mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "pool",
+            "type": "pubkey"
+          }
+        ]
+      }
+    },
+    {
+      "name": "SolEscrow",
+      "docs": [
+        "Program-owned account holding donated SOL."
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "StartupMode",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Migration"
+          },
+          {
+            "name": "Fresh"
+          }
+        ]
+      }
+    },
+    {
+      "name": "TreasuryBurn",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "config",
+            "type": "pubkey"
+          },
+          {
+            "name": "treasury",
+            "type": "pubkey"
+          },
+          {
+            "name": "mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "start_ts",
+            "type": "i64"
+          },
+          {
+            "name": "last_burn_ts",
+            "type": "i64"
+          },
+          {
+            "name": "total_burned",
+            "type": "u128"
+          }
+        ]
+      }
+    },
+    {
+      "name": "TreasuryBurnEvent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "config",
+            "type": "pubkey"
+          },
+          {
+            "name": "mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "periods",
+            "type": "u64"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          },
+          {
+            "name": "treasury_after",
+            "type": "u64"
+          },
+          {
+            "name": "settled_through",
+            "type": "i64"
+          },
+          {
+            "name": "total_burned",
+            "type": "u128"
+          }
+        ]
+      }
+    },
+    {
+      "name": "UserStake",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "owner",
+            "type": "pubkey"
+          },
+          {
+            "name": "referrer",
+            "type": "pubkey"
+          },
+          {
+            "name": "direct_count",
+            "type": "u32"
+          },
+          {
+            "name": "power_granted",
+            "type": "u128"
+          },
+          {
+            "name": "power",
+            "type": "u128"
+          },
+          {
+            "name": "donated_usdt",
+            "type": "u64"
+          },
+          {
+            "name": "reward_debt",
+            "type": "u128"
+          },
+          {
+            "name": "pending",
+            "type": "u128"
+          },
+          {
+            "name": "leg_power",
+            "docs": [
+              "Σ power of this user plus every descendant within `LEG_UPLINE` levels below — the \"leg\"",
+              "this user contributes to its direct upline. Σ over a parent's children ≡ parent.team_power."
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "max_leg",
+            "docs": [
+              "The largest `leg_power` among this user's direct children. `sync_level` only ever raises it",
+              "(it sees one leg at a time); `refresh_max_leg` recomputes it exactly from the whole set.",
+              "A stale-high value under-reports the small area, which is the safe direction."
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "direct_ge6",
+            "docs": [
+              "Number of direct children whose cached level is >= `STAR_COUNT_LEVEL` (the V7/V8 star gate)."
+            ],
+            "type": "u32"
+          },
+          {
+            "name": "flags",
+            "docs": [
+              "Bit flags; see `FLAG_LEG_SEEDED`."
+            ],
+            "type": "u8"
+          },
+          {
+            "name": "_reserved",
+            "type": "u8"
+          },
+          {
+            "name": "direct_power",
+            "type": "u128"
+          },
+          {
+            "name": "team_power",
+            "type": "u128"
+          },
+          {
+            "name": "synced_power",
+            "type": "u128"
+          },
+          {
+            "name": "level",
+            "type": "u8"
+          },
+          {
+            "name": "v_reward_debt",
+            "type": "u128"
+          },
+          {
+            "name": "level_reward_remainder",
+            "type": "u128"
+          },
+          {
+            "name": "v_pending",
+            "type": "u128"
+          },
+          {
+            "name": "v_tier",
+            "type": "u8"
+          },
+          {
+            "name": "direct_valid_count",
+            "type": "u32"
+          },
+          {
+            "name": "is_valid",
+            "type": "bool"
+          },
+          {
+            "name": "promo_pending",
+            "type": "u128"
+          },
+          {
+            "name": "first_donate_ts",
+            "type": "i64"
+          },
+          {
+            "name": "last_claim_ts",
+            "type": "i64"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          },
+          {
+            "name": "imported",
+            "type": "bool"
+          },
+          {
+            "name": "rebuilt",
+            "type": "bool"
+          },
+          {
+            "name": "rebuilt_children",
+            "type": "u32"
+          },
+          {
+            "name": "rebuild_cursor",
+            "type": "pubkey"
+          },
+          {
+            "name": "descendant_power",
+            "type": {
+              "array": [
+                "u128",
+                10
+              ]
+            }
+          },
+          {
+            "name": "referral_index",
+            "docs": [
+              "Monotonic parent-assigned position, 1..=parent.direct_count (root is 0).",
+              "New zero-power referrals can be excluded from a scan's frozen prefix safely."
+            ],
+            "type": "u32"
+          },
+          {
+            "name": "child_leg_revision",
+            "docs": [
+              "Incremented whenever any immediate child's leg can change, including 10th-hop deltas."
+            ],
+            "type": "u64"
+          }
+        ]
+      }
+    }
+  ]
+}

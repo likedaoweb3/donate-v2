@@ -1,0 +1,30 @@
+{
+  "files": {
+    ".dockerignore": "b534af4cae5de37c76e7f29e43cb9143c60c6b1455864de174cf6a7f86e8a1b5",
+    ".gitignore": "79fc5ea8a57b4558564bc58e6b79ce89f0bdf9021ad11363953486cd9ac43020",
+    "Cargo.lock": "7fab02b52e68047ad05b7fff9a2c0dcb904ae27d95ed1baca282dc313a3930b9",
+    "Cargo.toml": "8e7960fe97d2a0850772e3d0bfab0f16a57915fe6af3a05052e4710610b997f0",
+    "LICENSE": "d688d802c555bd6adb3d4de9984fa44b46a251e983d0d7ab15862a441137c0fb",
+    "README.md": "30bb8891f3ef50157b667b908d974e44b90bbbd7a52405c6e961b2d190800fd4",
+    "idl/donate.json": "1c2de8b3bc3a5d00a47f25bd1bf0b1cf4458a2a78a751b7d3c55ffb36a833212",
+    "programs/dex-pool/Cargo.toml": "10302ce1a0cab62dc8aada18872eab20ebac6e6800a13932a094eda9d859afe2",
+    "programs/dex-pool/src/legacy.rs": "c8f6ba90114c0ee54f848d8f950801e1aa830c1d0bb78b78c3312d351e2abf73",
+    "programs/dex-pool/src/lib.rs": "6b0613010d68523bbfc8ec8b7ebf55089b4cf3bd993c24a4d03f7dadfd5250ad",
+    "programs/donate/Cargo.toml": "f52c22680c4e94680e24ed8cc456209c300e7b4d47d814107a18dc81cdfd5519",
+    "programs/donate/src/allowance.rs": "74a844317d1809509fda54a330dc80ec6c207dfafb829bf836fa34e61c2f1636",
+    "programs/donate/src/escrow_guard.rs": "32faadd9da3cd45e7680cd36f220764a7ad2dd58667af331db85341706561afb",
+    "programs/donate/src/lib.rs": "02d30b13a8a52ca16680a11da800ad4d3b9db890799c00f9fd0a468b1d5e4958",
+    "programs/donate/src/max_leg.rs": "d398638ad07c45af03b18e37a7983a28a7bf3cf3a142d00c3f5cc398e56dd48f",
+    "programs/donate/src/migration.rs": "9671a9f075495bdeef4cf5284b1ee48012c65242082bdcfb814518403b66785c",
+    "programs/donate/src/oracle.rs": "8676e0e304a9eb0f3c27f92f89855173b7ecf027c87a929ea1806176357cde1a",
+    "programs/donate/src/raydium_migration.rs": "d88a2a4ca97e296b0ee6da781aed4581f462cb5d6317c7ea146ccd75d406ac74",
+    "programs/donate/src/treasury_burn.rs": "61bfbade325476d0e638c2f94923dde4c4a04be501c4a49a2f1dd8025c24fe16",
+    "programs/donate/src/venue.rs": "001c4e939ffaaea7e0c317cb0bfeab012f2456b7c927edd3f981f8e8b1d1f2c4",
+    "scripts/build.sh": "2c701d082688e13ef028c612b48fdb2dd7909e7e833a2a06d8da51c4671e462a",
+    "verification/build-results.json": "ca7bf59403c099706887f1a1dafd03a18a5441443f020bd0d73eafdde20db666",
+    "verification/mainnet-proof.json": "ecaa13b3827aeb0ec7ed2b0f8d7ceb87cdbbc1b0c08e2e5aadb8edab295d82b5",
+    "verification/sbf-stdlib-sha256.json": "bad7c19c3044648f990f7bec86f87e35b6df291bf38ce285dc3ad705688218a6",
+    "verification/sbf-stdlib.sha256": "baa3d38eb19e4ee5738e34353a2aefad809e15f44760d50a6ea2996915b2e8e2",
+    "verification/verification-pda-status.json": "0fadcda56a1a2d9683f96925ae96e9539a81048228ea39c265da5513bb8368f8"
+  }
+}

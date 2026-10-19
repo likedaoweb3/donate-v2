@@ -1,0 +1,36 @@
+{
+  "program": "9NhbVKzzSKwkP7kEgNzSpacYA9UfCi2b58E1mrn2QsKT",
+  "effectiveFileSha256": "91fd6d202135deb006c0b48f9fbd0f1546901393a96d08ba647ad21c9331719d",
+  "solanaVerifyExecutableHash": "c5a6e3f873983a748765befe9839a5fdd6ecd1d68ec7a73a82e29b2d7d54bc07",
+  "hashConvention": "solana-verify 0.5.1 trims trailing zero bytes from the executable before hashing; effectiveFileSha256 hashes all 1534600 ELF bytes",
+  "macOSOriginalWorkspace": {
+    "bytes": 1534600,
+    "sha256": "91fd6d202135deb006c0b48f9fbd0f1546901393a96d08ba647ad21c9331719d",
+    "targetSha256": "91fd6d202135deb006c0b48f9fbd0f1546901393a96d08ba647ad21c9331719d",
+    "exactMatch": true
+  },
+  "macOSMinimalPublicationWorkspace": {
+    "bytes": 1534600,
+    "sha256": "91fd6d202135deb006c0b48f9fbd0f1546901393a96d08ba647ad21c9331719d",
+    "matchesMainnet": true,
+    "unusedWorkspaceMemberRemoved": true,
+    "unusedLockPackageRemoved": true
+  },
+  "standardLinuxDocker": {
+    "bytes": 1534592,
+    "sha256": "5eaacbbb995ea23b4e19aec6a468f3bfeada602f7d203942250484c5892d1fe7",
+    "solanaVerifyHash": "20834a268e5eb0ef86c091ebb84f7fa9f2a88b203770836fe309cec9a842f1f2",
+    "matchesMainnet": false
+  },
+  "linuxWithOriginalSbfTargetLibraries": {
+    "bytes": 1534600,
+    "sha256": "162b72d86927f13548a61b433967139287f375a989c7dfa465d09fc0e3c5a399",
+    "matchesMainnetByteForByte": false,
+    "buildHost": "linux/amd64 Docker",
+    "compiler": "official Linux platform-tools v1.43, Rust 1.79.0",
+    "targetStandardLibrary": "official macOS aarch64 platform-tools v1.43 SBF target libraries",
+    "postBuildBinaryModification": false
+  },
+  "externalCertificationComplete": false,
+  "binaryPatchingUsed": false
+}

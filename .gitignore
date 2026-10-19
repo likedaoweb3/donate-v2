@@ -1,0 +1,4 @@
+/target/
+/artifacts/
+.env
+*-keypair.json

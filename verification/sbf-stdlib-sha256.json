@@ -1,0 +1,32 @@
+{
+  "release": "https://github.com/anza-xyz/platform-tools/releases/tag/v1.43",
+  "asset": "platform-tools-osx-aarch64.tar.bz2",
+  "target": "sbf-solana-solana",
+  "files": {
+    "libaddr2line-02a58e910cf014c5.rlib": "34ed1789bc315772be538356e0f37d9495ea9ec74347d6dfc1eabd12a403f29d",
+    "libadler-8e739901df43be2e.rlib": "f3f5e5925c3b9521c0286460b37e58988febb34f50a4baaadbc4e8f03a940c2c",
+    "liballoc-3e77b93767119273.rlib": "3e3eedc781730ef0658e4e8bee9231afed9978d4ee8afa362b537673dc0c435c",
+    "libcfg_if-0d96274ea9053164.rlib": "5739503f87bd35020877d1a74238e2f7b80856bd4c1bc81ba7e9957d6b251f91",
+    "libcompiler_builtins-61367c84741fa414.rlib": "9796aa415caf62d79088bba90a9265cba2511b62cc2b8d81fd49fcea6d50d945",
+    "libcore-95ff4a8299a888ae.rlib": "55a99785205c993f064207e948dca76658bdc9972a71d695116d5952734f53bd",
+    "libgetopts-4c2e93fba25fb09e.rlib": "014d2916306a62380bb546acbe3d723a625ac4b6d6532a0ed3e967bc1d239f54",
+    "libgimli-ca710ed7fd3ba301.rlib": "7efdc24eea75e7196fadc8153e10b96bd30d53924ae0cf054d5c814dcca86bde",
+    "libhashbrown-bc522a5d28f5edee.rlib": "6213007196fe9acc8a94c02236ec5951447ddfd61d7bae6ab41ce2cced9c58f8",
+    "liblibc-7a159b9ad3ebb28c.rlib": "3c28f763076e37aacfc7bbe8b1f26a14ac0f5d60271467262d36658921962e53",
+    "libmemchr-1de8657dbe79eddc.rlib": "934ea5ffa4a1273956ac63acc20032a023466dd00dde7af8ee08e3e655889594",
+    "libminiz_oxide-cd1eee07b3f272d7.rlib": "f3ca2a950e2729cf6eac32954af443fc55524015024d0035fbe1d41462f10ee8",
+    "libobject-461044894a18d878.rlib": "50ac307fc18c9f8faa1f8795d83910ac93f85fd429759abd68d2fc3e05105787",
+    "libpanic_abort-bbd51c7f05b5c0bb.rlib": "bbc5e56eb0ceffbd81c407273ad81f1503c7cc0fa4764943a37800a72d80b832",
+    "libpanic_unwind-c34c389632a6729e.rlib": "eae9e8aacfe2d93260b5445c42fd8a1e49d32977423128952fcabc22b70a1252",
+    "libproc_macro-6a21854fbe4cabb1.rlib": "23d4ff39d882d48a4f64e1306dfdf46002a9c2682cfd96abd32bcbaa0cc4abe9",
+    "librustc_std_workspace_alloc-f59301cf731a7ace.rlib": "f2893c19f3d34015518991b8412e6bf8fbc9c3090ac0da0c8a5e0ee418962f25",
+    "librustc_std_workspace_core-cb336d4ae62b085f.rlib": "548506b100b073f188c90fd76e37c46ba0d0c098eedca76db3f49726454cfc27",
+    "librustc_std_workspace_std-28630697a1a5d9be.rlib": "8721aab69fb36e6a5370a348700807713bb2629555f36e14a9e5f0c264f5451f",
+    "libstd-8a96d816e484a44a.rlib": "59b0ccc778b54e96e62b7db63ed70756192b26aac524908127cace8264456784",
+    "libstd_detect-86e6b939bdcf8adb.rlib": "f8b426239386fee8fbd637883d65a587710528bf912eb259773000600dd0eed8",
+    "libsysroot-a841dee37e138e16.rlib": "6e3d169082b3236bfb2ae7593656e279e5e61aba7e18d6bf927e73ecb5079e7b",
+    "libtest-dd1570254b9be588.rlib": "4a3bda508b666e5f95202cebdd521ba44b86c65033a2a40a4cd0b470392a0163",
+    "libunicode_width-763bda168bb7d2b0.rlib": "4d22ca99069156d30d20f2b25406ac71b66e98abb5f07e4c1cdc967800479890",
+    "libunwind-a88f17eb4a457c59.rlib": "a798b44d80fabf0d2aef16bc1df595eabe180ad2f594d6813dc12f13c6836319"
+  }
+}
